@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Menu, X, ChevronDown } from "lucide-react"
-
+import { Link } from "react-router-dom";
 import { Button } from "@/componentsForV0/ui/Button"
 import { cn } from "@/lib/utils"
 
@@ -36,9 +36,9 @@ export default function Navbar() {
       dropdown: [
         { name: "Mentoring", href: "/programas/mentoring" },
         { name: "Learning", href: "/programas/learning" },
-        { name: "Inspiring", href: "/programas/inspiring" },
+        { name: "Inspiring", href: "/inspiring" },
         { name: "Challenger", href: "/programas/challenger" },
-        { name: "Partners", href: "/programas/partners" },
+        { name: "Partners", href: "/partners" },
         { name: "Revenue", href: "/programas/revenue" },
       ],
     },
@@ -55,7 +55,7 @@ export default function Navbar() {
       )}
     >
       <div className="container flex items-center justify-between">
-        <a href="/" className="relative z-50">
+        <Link to="/" className="relative z-50">
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
             <img
               src="/images/incuvalab-logo.png"
@@ -65,7 +65,7 @@ export default function Navbar() {
               className={cn("h-10 w-auto", !isScrolled && "brightness-0 invert")}
             />
           </motion.div>
-        </a>
+        </Link>
 
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center space-x-8">
@@ -103,13 +103,13 @@ export default function Navbar() {
                       >
                         <div className="py-2">
                           {link.dropdown.map((item) => (
-                            <a
+                            <Link
                               key={item.name}
-                              href={item.href}
+                              to={item.href}
                               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#880043]"
                             >
                               {item.name}
-                            </a>
+                            </Link>
                           ))}
                         </div>
                       </motion.div>
@@ -117,8 +117,8 @@ export default function Navbar() {
                   </AnimatePresence>
                 </>
               ) : (
-                <a
-                  href={link.href}
+                <Link
+                  to={link.href}
                   className={cn(
                     "text-sm font-medium transition-colors",
                     isScrolled ? "text-gray-800" : "text-white",
@@ -126,14 +126,14 @@ export default function Navbar() {
                   )}
                 >
                   {link.name}
-                </a>
+                </Link>
               )}
             </div>
           ))}
         </nav>
 
         <div className="hidden lg:block">
-          <a href="/contacto">
+          <Link to="/contacto">
             <Button
               className={cn(
                 isScrolled
@@ -143,7 +143,7 @@ export default function Navbar() {
             >
               Contáctanos
             </Button>
-          </a>
+          </Link>
         </div>
 
         {/* Mobile Menu Button */}
@@ -218,39 +218,38 @@ export default function Navbar() {
                             className="pl-4 space-y-3"
                           >
                             {link.dropdown.map((item) => (
-                              <a
+                              <Link
                                 key={item.name}
-                                href={item.href}
+                                to={item.href}
                                 className="block text-gray-700 hover:text-[#880043]"
                                 onClick={() => setIsMobileMenuOpen(false)}
                               >
                                 {item.name}
-                              </a>
+                              </Link>
                             ))}
                           </motion.div>
                         )}
                       </AnimatePresence>
                     </div>
                   ) : (
-                    <a
-                      href={link.href}
+                    <Link
+                      to={link.href}
                       className="text-xl font-medium hover:text-[#880043]"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       {link.name}
-                    </a>
+                    </Link>
                   )}
                 </div>
               ))}
               <div className="pt-4">
-                <a href="/contacto">
+                <Link to="/contacto" onClick={() => setIsMobileMenuOpen(false)}>
                   <Button
                     className="w-full bg-[#880043] hover:bg-[#880043]/90 text-white h-14"
-                    onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Contáctanos
                   </Button>
-                </a>
+                </Link>
               </div>
             </div>
           </motion.div>

@@ -186,7 +186,7 @@ export default function Home() {
       ]
     return (
         <div className="flex min-h-screen flex-col bg-white font-sans">
-      <Navbar />
+      
       <main className="flex-1">
         {/* Hero Section */}
         <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-gradient-to-r from-[#880043] to-[#4a8fa3]">
@@ -547,7 +547,7 @@ export default function Home() {
           </div>
         </section>
       </main>
-      <Footer />
+      
     </div>
     )
 }
