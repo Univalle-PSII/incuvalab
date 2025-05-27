@@ -59,8 +59,17 @@ import Group_delete from "@/pages/Private/admin/group/Group_delete";
         
         
 // Importar los nuevos módulos desde sus carpetas
-import Partners from '../pages/Public/Partners'; 
-import Inspiring from '../pages/Public/Inspiring';     
+import AboutUs from '../pages/Public/AboutUs';
+import Mentors from '../pages/Public/Mentors';
+import Mentoring from '../pages/Public/Programs/Mentoring';
+import Learning from '../pages/Public/Programs/Learning';
+import Partners from '../pages/Public/Programs/Partners'; 
+import Challenger from '../pages/Public/Programs/Challenger'
+import Inspiring from '../pages/Public/Programs/Inspiring';
+import Revenue from '../pages/Public/Programs/Revenue';
+import CrowdFunding from '../pages/Public/CrowdFunding';   
+import Events from '../pages/Public/Events'; 
+import Contacts from '../pages/Public/Contacts';
 import Home from "@/pages/Public/Home";
         
 const Dashboard = lazy(() => import('@/components/Dashboard3'));
@@ -96,18 +105,50 @@ const publicRoutes = [
                 path: "",
                 element: <Home />,
             },
-
-
-
-
+            {
+                path: "aboutUs",
+                element: <AboutUs />,
+            },
+            {
+                path: "mentors",
+                element: <Mentors />,
+            },
             //////
+            {
+                path: "mentoring",
+                element: <Mentoring />,
+            },
+            {
+                path: "learning",
+                element: <Learning />,
+            },
+            {
+                path: "inspiring",
+                element: <Inspiring />,
+            },
+            {
+                path: "challenger",
+                element: <Challenger />,
+            },
             {
                 path: "partners",
                 element: <Partners />,
             },
             {
-                path: "inspiring",
-                element: <Inspiring />,
+                path: "revenue",
+                element: <Revenue />,
+            },
+            {
+                path: "crowdFunding",
+                element: <CrowdFunding />
+            },
+            {
+                path: "events",
+                element: <Events />,
+            },
+            {
+                path: "contacts",
+                element: < Contacts />,
             },
         ]
     },

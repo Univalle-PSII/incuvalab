@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { Users, LightbulbIcon, Trophy, Sparkles, Handshake, DollarSign, ArrowRight, ChevronRight } from "lucide-react"
-
+import { Link } from "react-router-dom"
 import { Button } from "@/componentsForV0/ui/Button"
 import { Input } from "@/componentsForV0/ui/Input"
 import { cn } from "@/lib/utils" 
@@ -13,6 +13,7 @@ import Footer from "@/componentsForV0/footer"
 import CountUp from "@/componentsForV0/count-up"
 
 export default function Home() {
+  
     const [isVisible, setIsVisible] = useState(false)
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -123,66 +124,66 @@ export default function Home() {
       ]
     
       const stats = [
-        { number: 150, label: "Emprendimientos Apoyados", suffix: "+" },
-        { number: 50, label: "Mentores Especializados", suffix: "+" },
-        { number: 25, label: "Alianzas Estratégicas", suffix: "+" },
-        { number: 10, label: "Años de Experiencia", suffix: "+" },
+        { number: 22, label: "Emprendimientos Apoyados" },
+        { number: 10, label: "Mentores Especializados" },
+        { number: 10, label: "Alianzas Estratégicas" },
+        { number: 4, label: "Años de Experiencia" },
       ]
     
       const testimonials = [
         {
           quote:
-            "IncuvaLab transformó mi idea en un negocio rentable. El apoyo de los mentores fue fundamental para superar los obstáculos iniciales.",
-          author: "María Gómez",
-          company: "Fundadora de EcoBolivia",
-          image: "/placeholder.svg?height=80&width=80&text=MG",
+            "El adoptar el fracaso como primer paso y luego transformarlo en los resultados que deseas es un arte que se domina con tiempo, reinvención y pasión.",
+          author: "Alvaro Orellana Guardia",
+          company: "Ing. Comercial, 8vo semestre",
+          image: "/images/Alvaro8voSemestre.png",
         },
         {
           quote:
-            "Los programas de capacitación me dieron las herramientas necesarias para escalar mi startup y atraer inversión internacional.",
-          author: "Carlos Mendoza",
-          company: "CEO de TechPaz",
-          image: "/placeholder.svg?height=80&width=80&text=CM",
+            "Sabemos que crear una empresa puede ser un proceso muy desafiante, nuestro consejo sería que tomen los riesgos, estén abiertos a las oportunidades, no tengan miedo de perseguir sus sueños.",
+          author: "Ervin Arispe Orellana",
+          company: "Lic. Adm de Empresas, 5to semestre",
+          image: "/images/Ervin5toSemestre.png",
         },
         {
           quote:
-            "Gracias a la red de contactos de IncuvaLab, pudimos establecer alianzas clave que impulsaron nuestro crecimiento en toda la región.",
-          author: "Laura Flores",
-          company: "Co-fundadora de AgroInnova",
-          image: "/placeholder.svg?height=80&width=80&text=LF",
+            "Les diríamos que no tengan miedo de intentarlo. A veces, el miedo alfracaso puede ser abrumador, pero si no intentas hacer algo nuevo, nunca sabrás si podrías haberlo logrado.",
+          author: "Heidi Katherine Aguilar Bozo",
+          company: "Ing. Comercial, 8vo semestre",
+          image: "/images/Heidi8voSemestre.png",
         },
       ]
     
       const events = [
         {
-          title: "Demo Day 2025",
-          date: "15 Abril, 2025",
-          description: "Presentación de startups finalistas del programa de aceleración ante inversionistas y partners.",
-          image: "/placeholder.svg?height=200&width=300&text=Demo Day",
+          title: "Ferias de Emprendedores",
+          date: "Junio, 2025",
+          description: "Es un espacio de exposición de proyectos de emprendimiento de estudiantes UNIVALLE.",
+          image: "/images/FeriaEmprendedores.jpg",
           category: "Evento",
         },
         {
-          title: "Lanzamiento del Programa de Aceleración",
-          date: "10 Mayo, 2025",
-          description: "Nueva convocatoria para startups tecnológicas con enfoque en sostenibilidad.",
-          image: "/placeholder.svg?height=200&width=300&text=Lanzamiento",
-          category: "Noticia",
+          title: "Lanzamiento de Incuva Lab 2025",
+          date: "Junio, 2025",
+          description: "Conoce sobre las oportunidades que la nueva versión de INCUVA LAB tiene para ti.",
+          image: "/images/Lanzamiento.jpg",
+          category: "Evento",
         },
         {
-          title: "Workshop: Finanzas para Startups",
-          date: "22 Mayo, 2025",
-          description: "Taller práctico sobre gestión financiera y captación de inversión para emprendedores.",
-          image: "/placeholder.svg?height=200&width=300&text=Workshop",
-          category: "Taller",
+          title: "Inicio del Programa de Mentoria",
+          date: "Julio, 2025",
+          description: "Arrancamos con el programa Mentoring a nivel Nacional, conoce a los elegidos.",
+          image: "/images/Mentores.png",
+          category: "Evento",
         },
       ]
     
       const partners = [
         { name: "Univalle", logo: "/images/univalle-logo.png" },
-        { name: "Partner 1", logo: "/placeholder.svg?height=80&width=160&text=Partner 1" },
-        { name: "Partner 2", logo: "/placeholder.svg?height=80&width=160&text=Partner 2" },
-        { name: "Partner 3", logo: "/placeholder.svg?height=80&width=160&text=Partner 3" },
-        { name: "Partner 4", logo: "/placeholder.svg?height=80&width=160&text=Partner 4" },
+        { name: "Manqa", logo: "/images/logo-manqa.webp" },
+        { name: "ICAM", logo: "/images/logo-ICAM.png" },
+        { name: "Federación de empresarios privados", logo: "/images/logo-FEP.png" },
+        { name: "Pista 8", logo: "/images/logo-pista8.jpg" },
       ]
     return (
         <div className="flex min-h-screen flex-col bg-white font-sans">
@@ -200,7 +201,7 @@ export default function Home() {
             </svg>
           </div>
 
-          <div className="container relative z-10">
+          <div className="container max-w-7xl mx-auto px-4 relative z-10">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
                 <h1 className="font-display text-5xl md:text-7xl font-bold mb-6 leading-tight text-white">
@@ -221,9 +222,7 @@ export default function Home() {
                   <img
                     src="/images/univalle-logo.png"
                     alt="Univalle Logo"
-                    width={120}
-                    height={40}
-                    className="h-8 w-auto brightness-0 invert"
+                    className="h-10 w-auto" //logo Univalle
                   />
                 </div>
               </motion.div>
@@ -239,7 +238,7 @@ export default function Home() {
                   <div className="p-1">
                     <div className="relative h-[500px] rounded-2xl overflow-hidden">
                       <img
-                        src="/placeholder.svg?height=500&width=600&text=Incuvalab"
+                        src="/images/univalleBolivia.jpg"
                         alt="Incuvalab"
                         className="object-cover w-full h-full"
                         style={{ height: "500px", width: "100%" }}
@@ -257,7 +256,7 @@ export default function Home() {
 
         {/* Stats Section */}
         <section id="stats-section" className="py-20 bg-white relative -mt-16 z-10 rounded-t-3xl shadow-lg">
-          <div className="container">
+          <div className="container max-w-7xl mx-auto px-4">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               {stats.map((stat, index) => (
                 <motion.div
@@ -285,7 +284,7 @@ export default function Home() {
 
         {/* About Section */}
         <section className="py-24 bg-slate-50">
-          <div className="container">
+          <div className="container max-w-7xl mx-auto px-4">
             <div className="grid lg:grid-cols-2 gap-16 items-center">
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
@@ -298,7 +297,7 @@ export default function Home() {
                 <div className="absolute inset-0 translate-x-4 translate-y-4 border-2 border-[#66b5cb] rounded-3xl"></div>
                 <div className="relative h-[500px] rounded-3xl overflow-hidden shadow-xl">
                   <img
-                    src="/placeholder.svg?height=500&width=600&text=Equipo Incuvalab"
+                    src="/images/FOTASA.jpg"
                     alt="Equipo Incuvalab"
                     className="object-cover w-full h-full"
                     style={{ height: "500px", width: "100%" }}
@@ -325,9 +324,11 @@ export default function Home() {
                   A través de nuestros diversos programas, ofrecemos mentoría especializada, capacitación, networking y
                   acceso a financiamiento para emprendedores en diferentes etapas de desarrollo.
                 </p>
-                <a href="/quienes-somos">
-                  <Button className="bg-[#880043] hover:bg-[#880043]/90 text-lg px-8 h-12">Conoce Más</Button>
-                </a>
+                <Link to="/aboutUs">
+                  <Button className="bg-[#880043] hover:bg-[#880043]/90 text-white text-lg px-8 h-12">
+                    Conoce Más
+                  </Button>
+                </Link>
               </motion.div>
             </div>
           </div>
@@ -335,7 +336,7 @@ export default function Home() {
 
         {/* Programas Section */}
         <section className="py-24 bg-white">
-          <div className="container">
+          <div className="container max-w-7xl mx-auto px-4">
             <div className="text-center max-w-3xl mx-auto mb-16">
               <h2 className="font-display text-4xl md:text-5xl font-bold mb-6 text-gray-900">
                 Impulsando el <span className="text-[#880043]">Ecosistema</span> Emprendedor
@@ -355,52 +356,42 @@ export default function Home() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                 >
-                  <Card className="h-full border-none shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
-                    <div className="h-24 flex items-center px-6" style={{ backgroundColor: programa.color }}>
-                      <div className="flex items-center">
-                        <div className="bg-white/20 p-3 rounded-lg mr-4">
-                          <div className="text-white">{programa.icon}</div>
-                        </div>
-                        <h3 className="font-display text-2xl font-bold text-white">{programa.title}</h3>
-                      </div>
-                    </div>
-                    <CardContent className="p-6">
-                      <p className="font-body text-gray-700 mb-6">{programa.description}</p>
-                      <div className="space-y-2 mb-6">
-                        {programa.features.slice(0, 2).map((feature, idx) => (
-                          <div key={idx} className="flex items-center gap-2">
-                            <div className="w-2 h-2 rounded-full" style={{ backgroundColor: programa.color }}></div>
-                            <span className="text-gray-700 text-sm">{feature}</span>
+                  <Link to={`/${programa.id}`}>
+                    <Card className="h-full border-none shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer">
+                      <div className="h-24 flex items-center px-6" style={{ backgroundColor: programa.color }}>
+                        <div className="flex items-center">
+                          <div className="bg-white/20 p-3 rounded-lg mr-4">
+                            <div className="text-white">{programa.icon}</div>
                           </div>
-                        ))}
+                          <h3 className="font-display text-2xl font-bold text-white">{programa.title}</h3>
+                        </div>
                       </div>
-                      <a
-                        href={`/programas/${programa.id}`}
-                        className="inline-flex items-center font-medium"
-                        style={{ color: programa.color }}
-                      >
-                        Conocer más
-                        <ChevronRight className="ml-1 h-4 w-4" />
-                      </a>
-                    </CardContent>
-                  </Card>
+                      <CardContent className="p-6">
+                        <p className="font-body text-gray-700 mb-6">{programa.description}</p>
+                        <div className="space-y-2 mb-6">
+                          {programa.features.slice(0, 2).map((feature, idx) => (
+                            <div key={idx} className="flex items-center gap-2">
+                              <div className="w-2 h-2 rounded-full" style={{ backgroundColor: programa.color }}></div>
+                              <span className="text-gray-700 text-sm">{feature}</span>
+                            </div>
+                          ))}
+                        </div>
+                        <div className="inline-flex items-center font-medium" style={{ color: programa.color }}>
+                          Conocer más
+                          <ChevronRight className="ml-1 h-4 w-4" />
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </Link>
                 </motion.div>
               ))}
-            </div>
-
-            <div className="flex justify-center mt-16">
-              <a href="/programas">
-                <Button size="lg" className="bg-[#880043] hover:bg-[#880043]/90 text-lg px-8 h-14">
-                  Ver Todos los Programas
-                </Button>
-              </a>
             </div>
           </div>
         </section>
 
         {/* Testimonials Section */}
         <section className="py-24 bg-slate-50 overflow-hidden">
-          <div className="container">
+          <div className="container max-w-7xl mx-auto px-4">
             <div className="text-center max-w-3xl mx-auto mb-16">
               <h2 className="font-display text-4xl md:text-5xl font-bold mb-6 text-gray-900">
                 Lo Que Dicen <span className="text-[#880043]">Nuestros</span> Emprendedores
@@ -444,48 +435,53 @@ export default function Home() {
 
         {/* News & Events Section */}
         <section className="py-24 bg-white">
-          <div className="container">
-            <div className="flex justify-between items-center mb-12">
-              <div>
-                <h2 className="font-display text-4xl font-bold text-gray-900">
-                  Noticias y <span className="text-[#880043]">Eventos</span>
-                </h2>
+            <div className="container max-w-7xl mx-auto px-4">
+              <div className="flex justify-between items-center mb-12">
+                <div>
+                  <h2 className="font-display text-4xl font-bold text-gray-900">
+                    Noticias y <span className="text-[#880043]">Eventos</span>
+                  </h2>
+                </div>
+                <Link to="/eventos" className="font-medium text-[#880043] hover:underline flex items-center">
+                  Ver Todo <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
               </div>
-              <a href="/eventos" className="font-medium text-[#880043] hover:underline flex items-center">
-                Ver Todo <ArrowRight className="ml-2 h-4 w-4" />
-              </a>
-            </div>
 
-            <div className="grid md:grid-cols-3 gap-8">
-              {events.map((event, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                >
-                  <Card className="h-full border-none shadow-lg overflow-hidden">
-                    <div className="relative h-48">
-                      <img src={event.image || "/placeholder.svg"} alt={event.title} className="object-cover w-full h-full" style={{ height: "100%", width: "100%" }} />
-                      <div className="absolute top-4 left-4">
-                        <Badge className="bg-white text-[#880043] border-none shadow-md">{event.category}</Badge>
+              <div className="grid md:grid-cols-3 gap-8">
+                {events.map((event, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                  >
+                    <Card className="h-full border-none shadow-lg overflow-hidden">
+                      <div className="relative h-48">
+                        <img
+                          src={event.image || "/placeholder.svg"}
+                          alt={event.title}
+                          className="object-cover w-full h-full"
+                          style={{ height: "100%", width: "100%" }}
+                        />
+                        <div className="absolute top-4 left-4">
+                          <Badge className="bg-white text-[#880043] border-none shadow-md">{event.category}</Badge>
+                        </div>
                       </div>
-                    </div>
-                    <CardContent className="p-6">
-                      <p className="font-body text-sm text-[#66b5cb] font-medium mb-2">{event.date}</p>
-                      <h3 className="font-display text-xl font-bold mb-2 line-clamp-2">{event.title}</h3>
-                      <p className="font-body text-gray-700 mb-4 line-clamp-2">{event.description}</p>
-                      <a href="#" className="font-medium text-[#880043] hover:underline flex items-center">
-                        Leer más <ArrowRight className="ml-2 h-4 w-4" />
-                      </a>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
+                      <CardContent className="p-6">
+                        <p className="font-body text-sm text-[#66b5cb] font-medium mb-2">{event.date}</p>
+                        <h3 className="font-display text-xl font-bold mb-2 line-clamp-2">{event.title}</h3>
+                        <p className="font-body text-gray-700 mb-4 line-clamp-2">{event.description}</p>
+                        <Link to="/events" className="font-medium text-[#880043] hover:underline flex items-center">
+                          Leer más <ArrowRight className="ml-2 h-4 w-4" />
+                        </Link>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                ))}
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
 
         {/* CTA Section */}
         <section className="py-24 relative overflow-hidden">
@@ -499,7 +495,7 @@ export default function Home() {
             </svg>
           </div>
 
-          <div className="container relative z-10">
+          <div className="container max-w-7xl mx-auto px-4 relative z-10">
             <div className="max-w-3xl mx-auto text-center text-white">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -522,7 +518,7 @@ export default function Home() {
 
         {/* Partners Section */}
         <section className="py-24 bg-white">
-          <div className="container">
+          <div className="container max-w-7xl mx-auto px-4">
             <div className="text-center max-w-3xl mx-auto mb-16">
               <h2 className="font-display text-4xl md:text-5xl font-bold mb-6 text-gray-900">
                 Nuestros <span className="text-[#880043]">Aliados</span> Estratégicos
@@ -547,7 +543,6 @@ export default function Home() {
           </div>
         </section>
       </main>
-      
     </div>
     )
 }
