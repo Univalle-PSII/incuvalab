@@ -3,31 +3,14 @@
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Menu, X, ChevronDown } from "lucide-react"
-import { Link, useLocation } from "react-router-dom"
+import { Link } from "react-router-dom";
 import { Button } from "@/componentsForV0/ui/Button"
 import { cn } from "@/lib/utils"
 
 export default function Navbar() {
-  const location = useLocation()
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState(null)
-
-  function scrollToTop() {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth", // para un scroll suave; usa 'auto' para instantáneo
-    })
-  }
-
-  // Llama a esta función cuando cambies de página
-  // Por ejemplo, si usas enlaces normales:
-  useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    })
-  }, [location.pathname])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -45,39 +28,41 @@ export default function Navbar() {
   }, [])
 
   const navLinks = [
-    { name: "Quienes Somos", href: "/aboutUs" },
-    { name: "Mentores", href: "/mentors" },
+    { name: "Quienes Somos", href: "/quienes-somos" },
+    { name: "Mentores", href: "/mentores" },
     {
       name: "Programas",
       href: "/programas",
       dropdown: [
-        { name: "Mentoring", href: "/mentoring" },
-        { name: "Learning", href: "/learning" },
+        { name: "Mentoring", href: "/programas/mentoring" },
+        { name: "Learning", href: "/programas/learning" },
         { name: "Inspiring", href: "/inspiring" },
-        { name: "Challenger", href: "/challenger" },
+        { name: "Challenger", href: "/programas/challenger" },
         { name: "Partners", href: "/partners" },
-        { name: "Revenue", href: "/revenue" },
+        { name: "Revenue", href: "/programas/revenue" },
       ],
     },
     { name: "CrowdFunding", href: "/crowdfunding" },
-    { name: "Eventos", href: "/events" },
-    { name: "Contacto", href: "/contacts" },
+    { name: "Eventos", href: "/eventos" },
+    { name: "Contacto", href: "/contacto" },
   ]
 
   return (
     <header
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        isScrolled ? "bg-white shadow-md py-3" : "bg-black/10 backdrop-blur-sm py-5",
+        isScrolled ? "bg-white/95 backdrop-blur-sm shadow-md py-3" : "bg-transparent py-5",
       )}
     >
-      <div className="container max-w-7xl mx-auto px-4 flex items-center justify-between">
+      <div className="container flex items-center justify-between">
         <Link to="/" className="relative z-50">
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
             <img
               src="/images/incuvalab-logo.png"
               alt="IncuvaLab Logo"
-              className="h-20 w-auto"  // Logo Incuva Lab
+              width={120}
+              height={40}
+              className={cn("h-10 w-auto", !isScrolled && "brightness-0 invert")}
             />
           </motion.div>
         </Link>
@@ -148,7 +133,7 @@ export default function Navbar() {
         </nav>
 
         <div className="hidden lg:block">
-          <Link to="/login">
+          <Link to="/contacto">
             <Button
               className={cn(
                 isScrolled
@@ -156,7 +141,7 @@ export default function Navbar() {
                   : "bg-white text-[#880043] hover:bg-white/90",
               )}
             >
-              Iniciar Sesion
+              Contáctanos
             </Button>
           </Link>
         </div>
@@ -202,7 +187,7 @@ export default function Navbar() {
             transition={{ duration: 0.3 }}
             className="lg:hidden fixed inset-0 z-40 bg-white pt-20 overflow-y-auto"
           >
-            <div className="container max-w-7xl mx-auto px-4 flex flex-col space-y-6 py-8">
+            <div className="container flex flex-col space-y-6 py-8">
               {navLinks.map((link) => (
                 <div key={link.name} className="border-b border-gray-100 pb-4">
                   {link.dropdown ? (
@@ -259,7 +244,11 @@ export default function Navbar() {
               ))}
               <div className="pt-4">
                 <Link to="/contacto" onClick={() => setIsMobileMenuOpen(false)}>
-                  <Button className="w-full bg-[#880043] hover:bg-[#880043]/90 text-white h-14">Contáctanos</Button>
+                  <Button
+                    className="w-full bg-[#880043] hover:bg-[#880043]/90 text-white h-14"
+                  >
+                    Contáctanos
+                  </Button>
                 </Link>
               </div>
             </div>

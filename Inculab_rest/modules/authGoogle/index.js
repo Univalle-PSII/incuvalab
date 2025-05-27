@@ -4,6 +4,7 @@ import { OAuth2Client } from 'google-auth-library';
 import jwt from 'jsonwebtoken';
 import User from '../user/model.js';
 import fs from 'fs';
+import cloudinary from '../../config/cloudinary.js';
 
 // Importar configuración OAuth2 desde un archivo JSON
 const keys = JSON.parse(fs.readFileSync('./modules/authGoogle/oauth2.keys.json', 'utf8'));
@@ -42,6 +43,16 @@ function generateRandomPassword(length = 10) {
     return password;
 }
 
+async function uploadToCloudinary(url) {
+    const response = await cloudinary.uploader.upload(url, {
+        folder: 'users',
+        use_filename: true,
+        unique_filename: false,
+        overwrite: true,
+    });
+    return response.secure_url;
+}
+
 // Ruta de callback para recibir el código de Google
 routes.get('/google/callback', async (req, res) => {
     try {
@@ -50,24 +61,27 @@ routes.get('/google/callback', async (req, res) => {
         client.setCredentials(tokens);
         const userInfo = await client.request({ url: 'https://www.googleapis.com/oauth2/v2/userinfo' });
 
-        // Buscar si el usuario ya existe en la base de datos
         let user = await User.findOne({ email: userInfo.data.email });
 
+        let photoUrl = userInfo?.data?.picture || null;
+        if (photoUrl) {
+            photoUrl = await uploadToCloudinary(photoUrl);
+        }
+
         if (!user) {
-            // Si el usuario no existe, crear uno nuevo
             user = new User({
                 name: userInfo.data.name.toUpperCase(),
                 username: generateUsername(userInfo.data),
                 email: userInfo.data.email,
                 password: generateRandomPassword(24),
-                photo_url: userInfo?.data?.picture || null,
+                photo_url: photoUrl,
                 last_login: new Date(),
             });
         } else {
             if (!user.is_active)
                 return res.status(401).json({ message: 'Usuario Deshabilitado' });
             user.name = userInfo.data.name.toUpperCase();
-            user.photo_url = userInfo?.data?.picture || null;
+            user.photo_url = photoUrl;
             user.last_login = new Date();
         }
 
@@ -84,7 +98,9 @@ routes.get('/google/callback', async (req, res) => {
                 expiresIn: process.env.JWT_TIME,
             }
         );
+
         user._doc.all_permissions = [...permissions];
+
         const formattedHeaven = makeHeaven(7) + token + makeHeaven(7);
         const formattedToken = makeHeaven(formattedHeaven.length);
 
@@ -94,8 +110,10 @@ routes.get('/google/callback', async (req, res) => {
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'Lax'
         });
+
         const encodedUserData = Buffer.from(JSON.stringify(user)).toString('base64');
         const encodedToken = Buffer.from(formattedToken).toString('base64');
+
         return res.redirect(`http://localhost:5173/login?user=${encodedUserData}&token=${encodedToken}`);
     } catch (error) {
         console.log(error);

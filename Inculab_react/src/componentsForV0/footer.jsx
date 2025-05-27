@@ -1,12 +1,12 @@
 import { Facebook, Instagram, Twitter, Linkedin, Mail, Phone, MapPin } from "lucide-react"
-import { Link } from "react-router-dom"
+
 import { Input } from "@/componentsForV0/ui/Input"
 import { Button } from "@/componentsForV0/ui/Button"
 
 export default function Footer() {
   return (
     <footer className="bg-gray-900 text-white pt-20 pb-8">
-      <div className="container max-w-7xl mx-auto px-4">
+      <div className="container">
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 pb-16">
           {/* Logo and Description */}
@@ -14,7 +14,9 @@ export default function Footer() {
             <img
               src="/images/incuvalab-logo.png"
               alt="Incuvalab Logo"
-              className="h-20 w-auto"
+              width={150}
+              height={50}
+              className="h-12 w-auto brightness-0 invert"
             />
             <p className="font-body text-gray-400">
               Transformando ideas en soluciones de impacto para Bolivia. Potenciamos el ecosistema emprendedor con
@@ -27,19 +29,24 @@ export default function Footer() {
             <h3 className="font-display text-lg font-bold mb-6">Enlaces</h3>
             <ul className="space-y-3">
               <li>
-                <Link to="/aboutUs" className="font-body text-gray-400 hover:text-white transition-colors">
+                <a href="/quienes-somos" className="font-body text-gray-400 hover:text-white transition-colors">
                   Quienes Somos
-                </Link>
+                </a>
               </li>
               <li>
-                <Link to="/mentors" className="font-body text-gray-400 hover:text-white transition-colors">
+                <a href="/mentores" className="font-body text-gray-400 hover:text-white transition-colors">
                   Mentores
-                </Link>
+                </a>
               </li>
               <li>
-                <Link to="/events" className="font-body text-gray-400 hover:text-white transition-colors">
+                <a href="/programas" className="font-body text-gray-400 hover:text-white transition-colors">
+                  Programas
+                </a>
+              </li>
+              <li>
+                <a href="/eventos" className="font-body text-gray-400 hover:text-white transition-colors">
                   Eventos
-                </Link>
+                </a>
               </li>
             </ul>
           </div>
@@ -53,23 +60,23 @@ export default function Footer() {
                 <span className="font-body text-gray-400">
                   Campus Universitario Univalle
                   <br />
-                  Tiquipaya
+                  Av. Argentina #2083
                   <br />
-                  Cochabamba, Bolivia
+                  La Paz, Bolivia
                 </span>
               </li>
               <li className="flex items-center">
                 <Mail className="h-5 w-5 text-[#66b5cb] mr-3 flex-shrink-0" />
                 <a
-                  href="mailto:mbuitragos@univalle.edu"
+                  href="mailto:info@incuvalab.com"
                   className="font-body text-gray-400 hover:text-white transition-colors"
                 >
-                  mbuitragos@univalle.edu
+                  info@incuvalab.com
                 </a>
               </li>
               <li className="flex items-center">
                 <Phone className="h-5 w-5 text-[#66b5cb] mr-3 flex-shrink-0" />
-                <span className="font-body text-gray-400">Tel. 4318800 Int.1120</span>
+                <span className="font-body text-gray-400">+591 2 123 4567</span>
               </li>
             </ul>
           </div>
@@ -134,9 +141,11 @@ export default function Footer() {
           <div className="flex items-center gap-4">
             <p className="font-body text-gray-500 text-sm">Una iniciativa de</p>
             <img
-              src="/images/univalle-logo-removebg-preview.png"
+              src="/images/univalle-logo.png"
               alt="Univalle Logo"
-              className="h-14 w-auto"
+              width={100}
+              height={30}
+              className="h-8 w-auto brightness-0 invert"
             />
           </div>
         </div>

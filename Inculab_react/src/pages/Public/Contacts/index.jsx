@@ -1,30 +1,36 @@
+import React from "react"
 import { Mail, Phone, MapPin, Clock, Send } from "lucide-react"
 
-import { Button } from "@/componentsForV0/ui/button"
-import { Input } from "@/componentsForV0/ui/input"
-import { Textarea } from "@/componentsForV0/ui/textarea"
-import { Label } from "@/componentsForV0/ui/label"
-import { RadioGroup, RadioGroupItem } from "@/componentsForV0/ui/radio-group"
-import { Card, CardContent } from "@/componentsForV0/ui/card"
-import Navbar from "@/componentsForV0/navbar"
-import Footer from "@/componentsForV0/footer"
+import { Button } from "@/componentsForV0/ui/Button"
+import { Input } from "@/componentsForV0/ui//Input"
+import { Textarea } from "@/componentsForV0/ui/Textarea"
+import { Label } from "@/componentsForV0/ui/Label"
+import { RadioGroup, RadioGroupItem } from "@/componentsForV0/ui/Radio-group"
+import { Card, CardContent } from "@/componentsForV0/ui/Card"
+import Navbar from "@/componentsForV0/Navbar"
+import Footer from "@/componentsForV0/Footer"
 
-export default function ContactoPage() {
+export default function Contacts() {
   return (
     <div className="flex min-h-screen flex-col bg-white">
+      <Navbar />
       <main className="flex-1">
         {/* Hero Section */}
         <section className="relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-[#880043] to-[#4a8fa3]"></div>
+          <div className="absolute bottom-0 left-0 right-0">
+            <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
+              <path
+                d="M0 120L60 110C120 100 240 80 360 70C480 60 600 60 720 65C840 70 960 80 1080 85C1200 90 1320 90 1380 90L1440 90V0H1380C1320 0 1200 0 1080 0C960 0 840 0 720 0C600 0 480 0 360 0C240 0 120 0 60 0H0V120Z"
+                fill="white"
+              />
+            </svg>
+          </div>
           <div className="absolute inset-0 opacity-20">
             <div className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full translate-x-1/3 -translate-y-1/2"></div>
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-white rounded-full -translate-x-1/3 translate-y-1/3"></div>
           </div>
-          <div
-            className="absolute bottom-0 left-0 right-0 h-16 bg-white"
-            style={{ clipPath: "polygon(0 100%, 100% 100%, 100% 0)" }}
-          ></div>
-          <div className="container max-w-7xl mx-auto px-4 relative z-10 py-24">
+          <div className="container relative z-10 py-24">
             <div className="max-w-3xl">
               <h1 className="text-5xl md:text-6xl font-bold mb-6 text-white">Contacto</h1>
               <p className="text-xl text-white/90 max-w-2xl">
@@ -37,7 +43,7 @@ export default function ContactoPage() {
 
         {/* Contact Info & Form */}
         <section className="py-24 bg-white">
-          <div className="container max-w-7xl mx-auto px-4">
+          <div className="container">
             <div className="grid lg:grid-cols-12 gap-12">
               <div className="lg:col-span-5">
                 <h2 className="text-3xl font-bold mb-8 text-[#880043]">Información de Contacto</h2>
@@ -57,9 +63,9 @@ export default function ContactoPage() {
                           <p className="text-gray-700">
                             Campus Universitario Univalle
                             <br />
-                            Tiquipaya
+                            Av. Argentina #2083
                             <br />
-                            Cochabamba, Bolivia
+                            La Paz, Bolivia
                           </p>
                         </div>
                       </div>
@@ -74,13 +80,13 @@ export default function ContactoPage() {
                         <div>
                           <h3 className="font-bold text-lg mb-2">Correo Electrónico</h3>
                           <p className="text-gray-700">
-                            <a href="mailto:mbuitragos@univalle.edu" className="hover:text-[#880043]">
-                              mbuitragos@univalle.edu
+                            <a href="mailto:info@incuvalab.com" className="hover:text-[#880043]">
+                              info@incuvalab.com
                             </a>
                             <br />
-                            {/*<a href="mailto:programas@incuvalab.com" className="hover:text-[#880043]">
+                            <a href="mailto:programas@incuvalab.com" className="hover:text-[#880043]">
                               programas@incuvalab.com
-                            </a>*/}
+                            </a>
                           </p>
                         </div>
                       </div>
@@ -95,9 +101,9 @@ export default function ContactoPage() {
                         <div>
                           <h3 className="font-bold text-lg mb-2">Teléfono</h3>
                           <p className="text-gray-700">
-                            Tel. 4318800 Int.1120
+                            +591 2 123 4567
                             <br />
-                            {/*+591 71234567 (WhatsApp)*/}
+                            +591 71234567 (WhatsApp)
                           </p>
                         </div>
                       </div>
@@ -112,7 +118,9 @@ export default function ContactoPage() {
                         <div>
                           <h3 className="font-bold text-lg mb-2">Horario de Atención</h3>
                           <p className="text-gray-700">
-                            Lunes a Viernes: 8:00 AM - 5:00 PM     
+                            Lunes a Viernes: 8:30 AM - 5:30 PM
+                            <br />
+                            Sábados: 9:00 AM - 12:00 PM
                           </p>
                         </div>
                       </div>
@@ -200,7 +208,7 @@ export default function ContactoPage() {
                         <Label htmlFor="telefono" className="text-base">
                           Teléfono
                         </Label>
-                        <Input id="telefono" placeholder="+591 XXXX" className="h-12" />
+                        <Input id="telefono" placeholder="+591 XXXXXXXX" className="h-12" />
                       </div>
 
                       <div className="space-y-3">
@@ -232,7 +240,7 @@ export default function ContactoPage() {
                         <Textarea id="mensaje" placeholder="Escribe tu mensaje aquí..." rows={5} />
                       </div>
 
-                      <Button type="submit" className="w-full bg-[#880043] text-white hover:bg-[#880043]/90 h-12 text-base">
+                      <Button type="submit" className="w-full bg-[#880043] hover:bg-[#880043]/90 h-12 text-base">
                         <Send className="mr-2 h-5 w-5" />
                         Enviar Mensaje
                       </Button>
@@ -246,23 +254,24 @@ export default function ContactoPage() {
 
         {/* Map Section */}
         <section className="py-24 bg-gray-50">
-          <div className="container max-w-7xl mx-auto px-4">
+          <div className="container">
             <div className="text-center max-w-3xl mx-auto mb-12">
               <h2 className="text-3xl font-bold mb-4 text-[#880043]">Nuestra Ubicación</h2>
               <p className="text-lg text-gray-700">
-                Estamos ubicados en el Campus Universitario de Univalle, Tiquipaya, Cochabamba, Bolivia.
+                Estamos ubicados en el Campus Universitario de Univalle, Av. Argentina #2083, La Paz, Bolivia.
               </p>
             </div>
             <div className="relative h-[500px] rounded-xl overflow-hidden shadow-xl">
               <img
-                src="/images/campusAmplio.png"
+                src="/placeholder.svg"
                 alt="Mapa de Ubicación"
-                className="object-cover w-full h-full"
+                style={{ width: "100%", height: "500px", objectFit: "cover" }}
               />
             </div>
           </div>
         </section>
       </main>
+      <Footer />
     </div>
   )
 }

@@ -9,15 +9,13 @@ import './Casos_detail.css';
 import client from "@/api";
 
 export default function Casos_detail() {
-    //essentials
     const { id } = useParams();
     const store = useContext(StoreContext);
     const [casos, set_casos] = useState({});
     const populate = [
         //initJSid_categoria
-"id_categoria",
-//endJSid_categoria
-//foreigns
+        "id_categoria",
+        //endJSid_categoria
         "last_user",
     ];
 
@@ -35,14 +33,14 @@ export default function Casos_detail() {
                 store.showErrors(["Error en la lectura"]);
             }).finally(() => store.setLoading(false));
         }
-    }, [])
+    }, []);
 
     return (
         <>
             <div className="px-2 py-1 sm:py-2 xl:py-4">
-                <div className="bg-gray-50 px-1  py-0.5 sm:py-0.5 2xl:py-1  sm:flex flex flex-wrap-reverse sm:items-center w-full">
+                <div className="bg-gray-50 px-1 py-0.5 sm:py-0.5 2xl:py-1 sm:flex flex flex-wrap-reverse sm:items-center w-full">
                     <div className="sm:flex-auto">
-                        <h1 className="ttext-balance 2xl:text-xl sm:text-lg text-sm  mt-2 sm:mt-0 font-semibold text-gray-900 uppercase">Casos Detalle</h1>
+                        <h1 className="ttext-balance 2xl:text-xl sm:text-lg text-sm mt-2 sm:mt-0 font-semibold text-gray-900 uppercase">Casos Detalle</h1>
                     </div>
                     <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
                         <Link
@@ -55,91 +53,62 @@ export default function Casos_detail() {
                         </Link>
                     </div>
                 </div>
-                <div className="sm:mt-3 2xl:mt-4 mt-1  px-4 py-4 bg-gray-50 rounded-lg border border-gray-200">
-                    <dl className=" grid 2xl:grid-cols-5 sm:grid-cols-4 grid-cols-1 2xl:gap-4 sm:gap-2 gap-1">
-                        {/* initJSXtitulo */}
+                <div className="sm:mt-3 2xl:mt-4 mt-1 px-4 py-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <dl className="grid 2xl:grid-cols-5 sm:grid-cols-4 grid-cols-1 2xl:gap-4 sm:gap-2 gap-1">
+                        
+                        {/* Titulo */}
+                        <div>
+                            <dt className="block font-medium text-black 2xl:text-sm text-xs">Titulo</dt>
+                            <dd className="block font-medium text-black 2xl:text-sm text-xs">{casos?.titulo}</dd>
+                        </div>
 
-        <div className="">
-            <dt className="block font-medium text-black 2xl:text-sm text-xs">
-                Titulo
-            </dt>
-            <dd className="block font-medium text-black 2xl:text-sm text-xs">
-                {casos?.titulo}
-            </dd>
-        </div>
-        
-{/* endJSXtitulo */}
-{/* initJSXdescripcion */}
+                        {/* Descripcion */}
+                        <div>
+                            <dt className="block font-medium text-black 2xl:text-sm text-xs">Descripcion</dt>
+                            <dd className="block font-medium text-black 2xl:text-sm text-xs" style={{ whiteSpace: 'pre-wrap' }}>{casos?.descripcion}</dd>
+                        </div>
 
-            <div className="">
-                <dt className="block font-medium text-black 2xl:text-sm text-xs">
-                    Descripcion
-                </dt>
-                <dd className="block font-medium text-black 2xl:text-sm text-xs" style={{ whiteSpace: 'pre-wrap' }}>
-                    {casos?.descripcion}
-                </dd>
-            </div>
-            
-{/* endJSXdescripcion */}
-{/* initJSXfotos */}
+                        {/* Fotos */}
+                        <div>
+                            <dt className="block font-medium text-black 2xl:text-sm text-xs">Fotos</dt>
+                            <dd className="block font-medium text-black 2xl:text-sm text-xs">
+                                <FilesViewer files={casos?.fotos} />
+                            </dd>
+                        </div>
 
-        <div className=" ">
-            <dt className="block font-medium text-black 2xl:text-sm text-xs">
-                Fotos
-            </dt>
-            <dd className="block font-medium text-black 2xl:text-sm text-xs">
-                {<FilesViewer files={casos?.fotos} />}
-            </dd>
-        </div>
-        
-{/* endJSXfotos */}
-{/* initJSXvideos */}
+                        {/* Videos */}
+                        <div>
+                            <dt className="block font-medium text-black 2xl:text-sm text-xs">Video (URL)</dt>
+                            <dd className="block font-medium text-blue-700 underline 2xl:text-sm text-xs break-all">
+                                {casos?.videos}
+                            </dd>
+                        </div>
 
-        <div className=" ">
-            <dt className="block font-medium text-black 2xl:text-sm text-xs">
-                Videos
-            </dt>
-            <dd className="block font-medium text-black 2xl:text-sm text-xs">
-                {<FilesViewer files={casos?.videos} />}
-            </dd>
-        </div>
-        
-{/* endJSXvideos */}
+                        {/* Categoria */}
+                        <div>
+                            <dt className="block font-medium text-black 2xl:text-sm text-xs">Categoría</dt>
+                            <dd className="block font-medium text-black 2xl:text-sm text-xs">{casos?.id_categoria}</dd>
+                        </div>
 
-
-{/* initJSXid_categoria */}
-
-        <div className=" ">
-            <dt className="block font-medium text-black 2xl:text-sm text-xs">
-                Categorias
-            </dt>
-            <dd className="block font-medium text-black 2xl:text-sm text-xs">
-                {casos?.id_categoria?.map(i => i.nombre_categoria).join(", ")}
-            </dd>
-        </div>
-        
-{/* endJSXid_categoria */}
-{/* fieldsDetail */}
+                        {/* Último Editor */}
                         <div className="sm:col-span-1">
-                            <dt className="block text-sm font-medium text-gray-700">
-                                Último Editor
-                            </dt>
+                            <dt className="block text-sm font-medium text-gray-700">Último Editor</dt>
                             <dd className="mt-1 block w-full shadow-sm sm:text-sm border-y-400 text-blue-800 rounded-md">
                                 {casos?.last_user?.name}
                             </dd>
                         </div>
+
+                        {/* Fecha Creación */}
                         <div className="sm:col-span-1">
-                            <dt className="block text-sm font-medium text-gray-700">
-                                Creado en
-                            </dt>
+                            <dt className="block text-sm font-medium text-gray-700">Creado en</dt>
                             <dd className="mt-1 block w-full shadow-sm sm:text-sm border-y-400 text-blue-800 rounded-md">
                                 {new Date(casos?.createdAt).toLocaleString("es-ES")}
                             </dd>
                         </div>
+
+                        {/* Fecha Actualización */}
                         <div className="sm:col-span-1">
-                            <dt className="block text-sm font-medium text-gray-700">
-                                Actualizado en
-                            </dt>
+                            <dt className="block text-sm font-medium text-gray-700">Actualizado en</dt>
                             <dd className="mt-1 block w-full shadow-sm sm:text-sm border-y-400 text-blue-800 rounded-md">
                                 {new Date(casos?.updatedAt).toLocaleString("es-ES")}
                             </dd>

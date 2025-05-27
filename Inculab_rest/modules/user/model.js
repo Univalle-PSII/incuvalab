@@ -49,9 +49,8 @@ const userSchema = new Schema({
         ref: 'User'
     }
 }, {
-    timestamps: true, //createdAt updatedAt automatic
+    timestamps: true,
     methods: {
-        //solo para el documento
         async get_all_permissions(id = null) {
             const permissions = [];
             var user = null;
@@ -84,11 +83,7 @@ const userSchema = new Schema({
             return permissions;
         },
     },
-    statics: {
-        //para todo el modelo
-    },
-    query: {
-        //para odenar o hacer consultas especiales
-    }
 });
-export default model('User', userSchema);
+
+// ⚡️ ESTO es lo que cambiamos
+export default model('User', userSchema, 'users');

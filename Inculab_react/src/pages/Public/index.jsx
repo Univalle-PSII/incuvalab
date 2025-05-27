@@ -4,10 +4,8 @@ import Navbar from "@/componentsForV0/navbar";
 import Footer from "@/componentsForV0/footer";
 
 function Public() {
-    
     return (
         <React.Fragment>
-            
             <header> <Navbar /> </header>
             
             {/* Renderiza las rutas hijas */}

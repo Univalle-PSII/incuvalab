@@ -1,78 +1,58 @@
 import { Schema, model } from "mongoose";
 
 const casosSchema = new Schema({
-//initJStitulo
-titulo: {
-            type: Schema.Types.String,
-            required: true,
-            
-            
-            
-            
-            
-            trim: true,
-        },
-        
-//endJStitulo
-//initJSdescripcion
-descripcion: {
-            type: Schema.Types.String,
-            
-            
-            
-            
-            
-            
-            trim: true,
-        },
-        
-//endJSdescripcion
-//initJSfotos
-fotos: [{
-            type: Schema.Types.Mixed,
-            
-        }],
-        
-//endJSfotos
-//initJSvideos
-videos: [{
-            type: Schema.Types.Mixed,
-            
-        }],
-        
-//endJSvideos
-
-
-//initJSid_categoria
-id_categoria: [{
-            type: Schema.Types.ObjectId,
-            
-            
-            
-            
-            
-            ref: "Categoria",
-            
-            
-            
-        }],
-        
-//endJSid_categoria
-//fields
-    last_user: {
-        type: Schema.Types.ObjectId,
-        ref: 'User'
+  titulo: {
+    type: String,
+    required: [true, "El título es obligatorio"],
+    trim: true,
+    maxlength: 255,
+  },
+  descripcion: {
+    type: String,
+    trim: true,
+    maxlength: 5000,
+  },
+  fotos: [
+    {
+      type: Schema.Types.Mixed, // Cloudinary devuelve objeto dinámico
     }
-},{
-    timestamps: true, //createdAt updatedAt automatic
-    methods: {
-        //solo para el documento
-    },
-    statics: {
-        //para todo el modelo
-    },
-    query: {
-        //para odenar o hacer consultas especiales
-    }
+  ],
+  videos: {
+    type: String,
+    trim: true,
+    maxlength: 1000,
+    required: [true, "El video es obligatorio"],
+  },
+  id_categoria: {
+    type: String,
+    enum: ["YouTube", "Facebook"], // Sólo estas dos
+    required: [true, "La categoría es obligatoria"],
+  },
+  fecha_video: {      // <-- Nuevo campo aquí
+    type: Date,
+    required: [true, "La fecha del video es obligatoria"],
+  },
+  last_user: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+  }
+}, {
+  timestamps: true, // createdAt y updatedAt automáticos
 });
-export default model('Casos',casosSchema);
+
+// Métodos personalizados
+casosSchema.methods = {
+  // Puedes agregar métodos aquí luego si quieres
+};
+
+// Métodos estáticos del modelo
+casosSchema.statics = {
+  // Por ejemplo búsquedas avanzadas
+};
+
+// Consultas especiales
+casosSchema.query = {
+  // Consultas específicas si necesitas
+};
+
+export default model('Casos', casosSchema);

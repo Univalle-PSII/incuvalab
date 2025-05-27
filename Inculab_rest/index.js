@@ -8,6 +8,7 @@ import configureMiddleware from './middleware/index.js';
 import { connectDB } from './utils/database.js';
 import { updatePermission, createAdminUser } from './utils/update.js';
 import routes from './modules/index.js';
+import storageRoutes from './modules/storageGoogle/index.js';
 
 const PORT = process.env.PORT || 4014;
 
@@ -19,10 +20,18 @@ if (process.env.NODE_ENV != "production") {
   createAdminUser();
 }
 const corsOptions = {
-  origin: [
-    'http://localhost:7011', 'http://localhost:8100',
-  ],
-  credentials: true, // Permite que se envíen cookies y encabezados de autorización
+  origin: (origin, callback) => {
+    if (
+      !origin || 
+      origin === 'http://localhost:7011' || 
+      /^http:\/\/192\.168\.\d{1,3}\.\d{1,3}(:\d+)?$/.test(origin)
+    ) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
 };
 app.use(cors(corsOptions));
 app.use(express.json());
@@ -34,6 +43,7 @@ configureMiddleware(app);
 
 // Importa las rutas de los modulos
 app.use('/', routes);
+app.use('/storage', storageRoutes);
 
 const httpServer = http.createServer(app);
 // Modified server startup
