@@ -343,3 +343,71 @@ input[type="radio"]:checked {
   width: 16px;
   height: 16px;
 }
+/* Estilos existentes... */
+
+/* Nuevos estilos para validación */
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #e53e3e;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  padding: 8px 12px;
+  background-color: #fff5f5;
+  border-radius: 6px;
+  border-left: 3px solid #e53e3e;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.input-error {
+  border-color: #e53e3e !important;
+  box-shadow: 0 0 0 2px rgba(229, 62, 62, 0.2);
+}
+
+.word-counter {
+  font-size: 0.8rem;
+  color: #718096;
+  margin-top: 4px;
+  text-align: right;
+}
+
+.image-counter {
+  font-size: 0.85rem;
+  color: #4a5568;
+  margin-top: 8px;
+  font-weight: 500;
+}
+
+.selected-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.skill-tag {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background-color: #ebf8ff;
+  color: #2b6cb0;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.remove-skill {
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.remove-skill:hover {
+  color: #e53e3e;
+}

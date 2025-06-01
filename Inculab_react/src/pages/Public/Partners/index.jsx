@@ -52,6 +52,10 @@ export default function PartnersPage() {
 
   return (
     <div className="partners-container">
+    <br />
+      <br />
+      <br />
+      <br />
       <h1 className="partners-title white-text">Partners</h1>
       <p className="partners-subtitle white-text">
         Encuentra socios potenciales para tu proyecto

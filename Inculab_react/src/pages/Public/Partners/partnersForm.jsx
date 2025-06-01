@@ -22,7 +22,7 @@ import {
   SelectItem,
 } from "./components/ui/select";
 import { Checkbox } from "./components/ui/checkbox";
-import { ChevronLeft, X, Check, Upload } from "lucide-react";
+import { ChevronLeft, X, Check, Upload, AlertCircle } from "lucide-react";
 import { StoreContext } from "@/context/store";
 import Toast from "./components/Toast";
 
@@ -33,6 +33,9 @@ export default function PartnersForm() {
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [showToast, setShowToast] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [touched, setTouched] = useState({});
+  const formRef = useRef(null);
 
   const allSkills = [
     "Desarrollo web",
@@ -62,8 +65,92 @@ export default function PartnersForm() {
     contacto: "",
   });
 
+  // Función para contar palabras
+  const wordCount = (text) => {
+    return text.trim() ? text.trim().split(/\s+/).filter(Boolean).length : 0;
+  };
+
+  // Validaciones
+  const isValidName = (name) => 
+    /^[a-zA-Z0-9\sáéíóúÁÉÍÓÚñÑ.,;:¿?¡!()\-]+$/.test(name) && 
+    wordCount(name) <= 20 &&
+    name.length <= 100;
+
+  const isValidContact = (contact) =>
+    /^\+591\s\d{8}$/.test(contact) ||
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact);
+
+  const validateField = (name, value) => {
+    let error = "";
+    
+    switch (name) {
+      case "nombre":
+        if (!value.trim()) {
+          error = "El nombre del proyecto es obligatorio";
+        } else if (!isValidName(value)) {
+          error = "Máximo 20 palabras y 100 caracteres";
+        }
+        break;
+      case "descripcion":
+        const descCount = wordCount(value);
+        if (!value.trim()) {
+          error = "La descripción breve es obligatoria";
+        } else if (descCount < 15 || descCount > 50) {
+          error = `Debe tener entre 15-50 palabras (actual: ${descCount})`;
+        }
+        break;
+      case "descripcion_proyecto":
+        const detCount = wordCount(value);
+        if (!value.trim()) {
+          error = "La descripción detallada es obligatoria";
+        } else if (detCount < 50 || detCount > 100) {
+          error = `Debe tener entre 50-100 palabras (actual: ${detCount})`;
+        }
+        break;
+      case "contacto":
+        if (!value.trim()) {
+          error = "La información de contacto es obligatoria";
+        } else if (!isValidContact(value)) {
+          error = "Formato inválido. Usa +591 XXXXXXXX o un email válido";
+        }
+        break;
+      case "area":
+        if (!value) error = "Selecciona un área del proyecto";
+        break;
+      case "etapa_proyecto":
+        if (!value) error = "Selecciona una etapa del proyecto";
+        break;
+      case "fotos":
+        if (value.length < 1) error = "Debes subir al menos una imagen";
+        break;
+      case "terms":
+        if (!termsAccepted) error = "Debes aceptar los términos";
+        break;
+      default:
+        break;
+    }
+    
+    return error;
+  };
+
   const handleInputChange = (field) => (e) => {
-    setFormData({ ...formData, [field]: e.target.value });
+    const value = e.target.value;
+    setFormData(prev => ({ ...prev, [field]: value }));
+    
+    if (touched[field]) {
+      const error = validateField(field, value);
+      setErrors(prev => ({ ...prev, [field]: error }));
+    }
+  };
+
+  const handleBlur = (field) => (e) => {
+    if (!touched[field]) {
+      setTouched(prev => ({ ...prev, [field]: true }));
+    }
+    
+    const value = field === "terms" ? termsAccepted : formData[field];
+    const error = validateField(field, value);
+    setErrors(prev => ({ ...prev, [field]: error }));
   };
 
   const toggleSocio = (skill) => {
@@ -81,61 +168,77 @@ export default function PartnersForm() {
     data.append("upload_preset", "proyectos_upload");
     data.append("cloud_name", "dj1t7xem6");
 
-    const res = await fetch(
-      "https://api.cloudinary.com/v1_1/dj1t7xem6/image/upload",
-      {
-        method: "POST",
-        body: data,
-      }
-    );
+    try {
+      const res = await fetch(
+        "https://api.cloudinary.com/v1_1/dj1t7xem6/image/upload",
+        {
+          method: "POST",
+          body: data,
+        }
+      );
 
-    const result = await res.json();
-    return result.secure_url;
+      const result = await res.json();
+      return result.secure_url;
+    } catch (error) {
+      console.error("Error al subir la imagen:", error);
+      setErrors(prev => ({
+        ...prev, 
+        fotos: "Error al subir imágenes. Inténtalo de nuevo"
+      }));
+      return null;
+    }
   };
 
   const handleAreaChange = (value) => {
     setSelectedArea(value);
     setFormData({ ...formData, area: value });
+    
+    if (touched.area) {
+      const error = validateField("area", value);
+      setErrors(prev => ({ ...prev, area: error }));
+    }
   };
 
-  const isValidName = (name) => /^[a-zA-Z0-9\s]+$/.test(name) && wordCount(name) <= 20;
-  const wordCount = (text) => text.trim().split(/\s+/).filter(Boolean).length;
-  const isValidContact = (contact) =>
-    /^\+591\s\d{8}$/.test(contact) || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact);
+  const validateForm = () => {
+    const newErrors = {};
+    let isValid = true;
+    Object.keys(formData).forEach(field => {
+      if (field !== "video" && field !== "socios_buscados" && field !== "otra_habilidad") {
+        const error = validateField(field, formData[field]);
+        if (error) {
+          newErrors[field] = error;
+          isValid = false;
+        }
+      }
+    });
+    const photosError = validateField("fotos", formData.fotos);
+    if (photosError) {
+      newErrors.fotos = photosError;
+      isValid = false;
+    }
+    const termsError = validateField("terms", termsAccepted);
+    if (termsError) {
+      newErrors.terms = termsError;
+      isValid = false;
+    }
+    
+    setErrors(newErrors);
+    return isValid;
+  };
 
   const handleSubmit = async () => {
-    if (!formData.nombre.trim() || !isValidName(formData.nombre)) {
-      alert("Nombre inválido. Solo letras y números, máximo 20 palabras.");
-      return;
-    }
-    const descripcionCount = wordCount(formData.descripcion);
-    if (descripcionCount < 25 || descripcionCount > 50) {
-      alert("Descripción breve debe tener entre 25 y 50 palabras.");
-      return;
-    }
-    const descripcionDetalladaCount = wordCount(formData.descripcion_proyecto);
-    if (descripcionDetalladaCount < 50 || descripcionDetalladaCount > 100) {
-      alert("Descripción detallada debe tener entre 50 y 100 palabras.");
-      return;
-    }
-    if (!selectedArea) {
-      alert("Selecciona un área del proyecto.");
-      return;
-    }
-    if (!formData.etapa_proyecto) {
-      alert("Selecciona una etapa del proyecto.");
-      return;
-    }
-    if (formData.fotos.length < 1) {
-      alert("Debes subir al menos una imagen del proyecto.");
-      return;
-    }
-    if (!isValidContact(formData.contacto)) {
-      alert("Contacto inválido. Usa un número como +591 63936223 o un correo electrónico válido.");
-      return;
-    }
-    if (!termsAccepted) {
-      alert("Debes aceptar los términos y condiciones.");
+    const allTouched = {};
+    Object.keys(formData).forEach(field => {
+      allTouched[field] = true;
+    });
+    allTouched.terms = true;
+    allTouched.fotos = true;
+    setTouched(allTouched);
+    if (!validateForm()) {
+      const firstError = document.querySelector('.error-message');
+      if (firstError) {
+        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
       return;
     }
 
@@ -187,23 +290,33 @@ export default function PartnersForm() {
         });
         setSelectedArea("Tecnología");
         setTermsAccepted(false);
+        setErrors({});
+        setTouched({});
+        
         setTimeout(() => {
           setShowToast(false);
           navigate("/partners");
         }, 3000);
       } else {
-        alert(`Error al publicar: ${data.message || "Error desconocido"}`);
+        setToastMessage(`Error al publicar: ${data.message || "Error desconocido"}`);
+        setShowToast(true);
       }
     } catch (error) {
       console.error(error);
-      alert("Error de conexión con el servidor.");
+      setToastMessage("Error de conexión con el servidor");
+      setShowToast(true);
     } finally {
       store.setLoading(false);
     }
   };
 
   return (
+    
     <div className="new-project-container">
+    <br />
+      <br />
+      <br />
+      <br />
       <div className="form-wrapper">
         <div className="header-section">
           <Button asChild variant="ghost" size="sm" className="back-button">
@@ -218,7 +331,7 @@ export default function PartnersForm() {
           </p>
         </div>
 
-        <Card>
+        <Card ref={formRef}>
           <CardHeader>
             <CardTitle>Información del proyecto</CardTitle>
             <CardDescription>
@@ -233,9 +346,20 @@ export default function PartnersForm() {
                 id="nombre"
                 value={formData.nombre}
                 onChange={handleInputChange("nombre")}
+                onBlur={handleBlur("nombre")}
                 required
                 placeholder="Ej: App para monitoreo de salud"
+                className={errors.nombre ? "input-error" : ""}
               />
+              <div className="word-counter">
+                {wordCount(formData.nombre)}/20 palabras
+              </div>
+              {errors.nombre && (
+                <div className="error-message">
+                  <AlertCircle size={16} />
+                  <span>{errors.nombre}</span>
+                </div>
+              )}
             </div>
 
             <div className="field-group">
@@ -245,9 +369,20 @@ export default function PartnersForm() {
                 rows={2}
                 value={formData.descripcion}
                 onChange={handleInputChange("descripcion")}
+                onBlur={handleBlur("descripcion")}
                 required
                 placeholder="Describe en 1-2 frases tu proyecto..."
+                className={errors.descripcion ? "input-error" : ""}
               />
+              <div className="word-counter">
+                {wordCount(formData.descripcion)} palabras (15-50 requeridas)
+              </div>
+              {errors.descripcion && (
+                <div className="error-message">
+                  <AlertCircle size={16} />
+                  <span>{errors.descripcion}</span>
+                </div>
+              )}
             </div>
 
             <div className="field-group">
@@ -259,9 +394,20 @@ export default function PartnersForm() {
                 rows={5}
                 value={formData.descripcion_proyecto}
                 onChange={handleInputChange("descripcion_proyecto")}
+                onBlur={handleBlur("descripcion_proyecto")}
                 required
                 placeholder="Explica tu proyecto, idea o tesis en detalle..."
+                className={errors.descripcion_proyecto ? "input-error" : ""}
               />
+              <div className="word-counter">
+                {wordCount(formData.descripcion_proyecto)} palabras (50-100 requeridas)
+              </div>
+              {errors.descripcion_proyecto && (
+                <div className="error-message">
+                  <AlertCircle size={16} />
+                  <span>{errors.descripcion_proyecto}</span>
+                </div>
+              )}
             </div>
 
             <div className="field-group">
@@ -280,17 +426,28 @@ export default function PartnersForm() {
                   )
                 )}
               </RadioGroup>
+              {errors.area && (
+                <div className="error-message">
+                  <AlertCircle size={16} />
+                  <span>{errors.area}</span>
+                </div>
+              )}
             </div>
 
             <div className="field-group">
               <Label>Etapa del proyecto *</Label>
               <Select
                 value={formData.etapa_proyecto}
-                onValueChange={(val) =>
-                  setFormData({ ...formData, etapa_proyecto: val })
-                }
+                onValueChange={(val) => {
+                  setFormData({ ...formData, etapa_proyecto: val });
+                  if (touched.etapa_proyecto) {
+                    const error = validateField("etapa_proyecto", val);
+                    setErrors(prev => ({ ...prev, etapa_proyecto: error }));
+                  }
+                }}
+                onBlur={handleBlur("etapa_proyecto")}
               >
-                <SelectTrigger>
+                <SelectTrigger className={errors.etapa_proyecto ? "input-error" : ""}>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent className="select-content">
@@ -303,18 +460,24 @@ export default function PartnersForm() {
                   <SelectItem value="MVP">MVP</SelectItem>
                 </SelectContent>
               </Select>
+              {errors.etapa_proyecto && (
+                <div className="error-message">
+                  <AlertCircle size={16} />
+                  <span>{errors.etapa_proyecto}</span>
+                </div>
+              )}
             </div>
 
             <div className="field-group">
-              <Label>Imágenes del proyecto</Label>
+              <Label>Imágenes del proyecto *</Label>
               <label
                 htmlFor="image-upload"
-                className="upload-box custom-upload"
+                className={`upload-box custom-upload ${errors.fotos ? "input-error" : ""}`}
               >
                 <Upload className="upload-icon" />
                 <span className="upload-text">Seleccionar imágenes</span>
                 <span className="upload-note">
-                  Puedes subir varias imágenes
+                  Puedes subir varias imágenes (mínimo 1)
                 </span>
               </label>
               <input
@@ -329,13 +492,19 @@ export default function PartnersForm() {
 
                   for (const file of files) {
                     const url = await subirImagenACloudinary(file);
-                    urls.push(url);
+                    if (url) urls.push(url);
                   }
 
                   setFormData((prev) => ({
                     ...prev,
                     fotos: [...prev.fotos, ...urls],
                   }));
+                  
+                  // Validar fotos después de subir
+                  if (touched.fotos) {
+                    const error = validateField("fotos", [...formData.fotos, ...urls]);
+                    setErrors(prev => ({ ...prev, fotos: error }));
+                  }
                 }}
               />
               <div className="preview-gallery">
@@ -348,22 +517,38 @@ export default function PartnersForm() {
                     />
                     <button
                       className="remove-image-btn"
-                      onClick={() =>
+                      onClick={() => {
                         setFormData((prev) => ({
                           ...prev,
                           fotos: prev.fotos.filter((_, i) => i !== idx),
-                        }))
-                      }
+                        }));
+                        
+                        // Validar fotos después de eliminar
+                        if (touched.fotos) {
+                          const updatedFotos = formData.fotos.filter((_, i) => i !== idx);
+                          const error = validateField("fotos", updatedFotos);
+                          setErrors(prev => ({ ...prev, fotos: error }));
+                        }
+                      }}
                     >
                       <X className="remove-icon" />
                     </button>
                   </div>
                 ))}
               </div>
+              {errors.fotos && (
+                <div className="error-message">
+                  <AlertCircle size={16} />
+                  <span>{errors.fotos}</span>
+                </div>
+              )}
+              <div className="image-counter">
+                {formData.fotos.length} imagen(es) subida(s)
+              </div>
             </div>
 
             <div className="field-group">
-              <Label>Habilidades requeridas *</Label>
+              <Label>Habilidades requeridas</Label>
               <div className="skills-grid">
                 {allSkills.map((skill) => (
                   <div key={skill} className="skill-item">
@@ -385,6 +570,31 @@ export default function PartnersForm() {
                 onChange={handleInputChange("otra_habilidad")}
                 placeholder="Ej: Biología, Blockchain..."
               />
+              <div className="selected-skills">
+                {formData.socios_buscados.map((skill, index) => (
+                  <span key={index} className="skill-tag">
+                    {skill}
+                    <X 
+                      size={14} 
+                      onClick={() => toggleSocio(skill)}
+                      className="remove-skill"
+                    />
+                  </span>
+                ))}
+                {formData.otra_habilidad && (
+                  <span className="skill-tag">
+                    {formData.otra_habilidad}
+                    <X 
+                      size={14} 
+                      onClick={() => setFormData(prev => ({
+                        ...prev, 
+                        otra_habilidad: ""
+                      }))}
+                      className="remove-skill"
+                    />
+                  </span>
+                )}
+              </div>
             </div>
 
             <div className="field-group">
@@ -393,21 +603,42 @@ export default function PartnersForm() {
                 id="contacto"
                 value={formData.contacto}
                 onChange={handleInputChange("contacto")}
+                onBlur={handleBlur("contacto")}
                 required
-                placeholder="Correo, LinkedIn, etc."
+                placeholder="Ej: +591 61234567 o correo@ejemplo.com"
+                className={errors.contacto ? "input-error" : ""}
               />
+              {errors.contacto && (
+                <div className="error-message">
+                  <AlertCircle size={16} />
+                  <span>{errors.contacto}</span>
+                </div>
+              )}
             </div>
 
             <div className="terms-box">
               <Checkbox
                 id="terms"
                 checked={termsAccepted}
-                onCheckedChange={setTermsAccepted}
+                onCheckedChange={(checked) => {
+                  setTermsAccepted(checked);
+                  if (touched.terms) {
+                    const error = validateField("terms", checked);
+                    setErrors(prev => ({ ...prev, terms: error }));
+                  }
+                }}
+                onBlur={handleBlur("terms")}
               />
               <Label htmlFor="terms">
                 Acepto los <Link to="/terms">Términos</Link> y la{" "}
                 <Link to="/privacy">Política de privacidad</Link> *
               </Label>
+              {errors.terms && (
+                <div className="error-message">
+                  <AlertCircle size={16} />
+                  <span>{errors.terms}</span>
+                </div>
+              )}
             </div>
           </CardContent>
           <CardFooter>
@@ -420,7 +651,11 @@ export default function PartnersForm() {
       </div>
 
       {showToast && (
-        <Toast message={toastMessage} onClose={() => setShowToast(false)} />
+        <Toast 
+          message={toastMessage} 
+          onClose={() => setShowToast(false)} 
+          type={toastMessage.includes("Error") ? "error" : "success"}
+        />
       )}
     </div>
   );
