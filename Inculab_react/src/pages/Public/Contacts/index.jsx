@@ -1,5 +1,6 @@
-import { Mail, Phone, MapPin, Clock, Send } from "lucide-react"
-
+import { Mail, Phone, MapPin, Clock, Send, AlertCircle, CheckCircle } from "lucide-react"
+import { useState, useEffect } from "react"
+ 
 import { Button } from "@/componentsForV0/ui/button"
 import { Input } from "@/componentsForV0/ui/input"
 import { Textarea } from "@/componentsForV0/ui/textarea"
@@ -8,8 +9,167 @@ import { RadioGroup, RadioGroupItem } from "@/componentsForV0/ui/radio-group"
 import { Card, CardContent } from "@/componentsForV0/ui/card"
 import Navbar from "@/componentsForV0/navbar"
 import Footer from "@/componentsForV0/footer"
-
+ 
 export default function ContactoPage() {
+  const [formData, setFormData] = useState({
+    nombre: '',
+    apellido: '',
+    email: '',
+    telefono: '',
+    motivo: 'informacion',
+    mensaje: ''
+  })
+ 
+  const [errors, setErrors] = useState({})
+  const [touched, setTouched] = useState({})
+  const [isSubmitting, setIsSubmitting] = useState(false)
+ 
+  // Validación en tiempo real
+  const validateField = (field, value) => {
+    let error = ''
+ 
+    switch (field) {
+      case 'nombre':
+        if (!value.trim()) {
+          error = 'El nombre es requerido'
+        } else if (value.trim().length < 2) {
+          error = 'El nombre debe tener al menos 2 caracteres'
+        } else if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(value)) {
+          error = 'El nombre solo puede contener letras'
+        }
+        break
+ 
+      case 'apellido':
+        if (!value.trim()) {
+          error = 'El apellido es requerido'
+        } else if (value.trim().length < 2) {
+          error = 'El apellido debe tener al menos 2 caracteres'
+        } else if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(value)) {
+          error = 'El apellido solo puede contener letras'
+        }
+        break
+ 
+      case 'email':
+        if (!value.trim()) {
+          error = 'El correo electrónico es requerido'
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+          error = 'Ingresa un correo electrónico válido (ejemplo: usuario@dominio.com)'
+        }
+        break
+ 
+      case 'telefono':
+        if (!value.trim()) {
+          error = 'El teléfono es requerido'
+        } else if (!/^[0-9\s+\-()]+$/.test(value)) {
+          error = 'El teléfono solo puede contener números, espacios, +, - y paréntesis'
+        } else {
+          const cleanPhone = value.replace(/[\s\-()]/g, '')
+          if (!/^(\+591)?[67]\d{7}$/.test(cleanPhone)) {
+            error = 'Formato válido: +591 70123456 o 70123456 (números bolivianos)'
+          }
+        }
+        break
+ 
+      case 'mensaje':
+        if (!value.trim()) {
+          error = 'El mensaje es requerido'
+        } else if (value.trim().length < 10) {
+          error = 'El mensaje debe tener al menos 10 caracteres'
+        } else if (value.trim().length > 500) {
+          error = 'El mensaje no puede exceder 500 caracteres'
+        }
+        break
+ 
+      default:
+        break
+    }
+ 
+    return error
+  }
+ 
+  const handleInputChange = (field, value) => {
+    setFormData(prev => ({ ...prev, [field]: value }))
+   
+    // Validar en tiempo real solo si el campo ya fue tocado
+    if (touched[field]) {
+      const error = validateField(field, value)
+      setErrors(prev => ({ ...prev, [field]: error }))
+    }
+  }
+ 
+  const handleBlur = (field) => {
+    setTouched(prev => ({ ...prev, [field]: true }))
+    const error = validateField(field, formData[field])
+    setErrors(prev => ({ ...prev, [field]: error }))
+  }
+ 
+  const validateForm = () => {
+    const newErrors = {}
+    const fields = ['nombre', 'apellido', 'email', 'telefono', 'mensaje']
+   
+    fields.forEach(field => {
+      const error = validateField(field, formData[field])
+      if (error) newErrors[field] = error
+    })
+ 
+    setErrors(newErrors)
+    setTouched(Object.fromEntries(fields.map(field => [field, true])))
+    return Object.keys(newErrors).length === 0
+  }
+ 
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+   
+    if (!validateForm()) {
+      return
+    }
+ 
+    setIsSubmitting(true)
+   
+    try {
+      console.log('Datos del formulario:', formData)
+      await new Promise(resolve => setTimeout(resolve, 2000))
+     
+      setFormData({
+        nombre: '',
+        apellido: '',
+        email: '',
+        telefono: '',
+        motivo: 'informacion',
+        mensaje: ''
+      })
+      setErrors({})
+      setTouched({})
+     
+      alert('Mensaje enviado correctamente')
+    } catch (error) {
+      alert('Error al enviar el mensaje. Inténtalo de nuevo.')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+ 
+  const getFieldStatus = (field) => {
+    if (!touched[field]) return 'default'
+    if (errors[field]) return 'error'
+    if (formData[field].trim()) return 'success'
+    return 'default'
+  }
+ 
+  const getInputClassName = (field) => {
+    const status = getFieldStatus(field)
+    const baseClass = 'h-12 transition-all duration-200'
+   
+    switch (status) {
+      case 'error':
+        return `${baseClass} border-red-500 focus:border-red-500 focus:ring-red-200`
+      case 'success':
+        return `${baseClass} border-green-500 focus:border-green-500 focus:ring-green-200`
+      default:
+        return `${baseClass} border-gray-300 focus:border-blue-500 focus:ring-blue-200`
+    }
+  }
+ 
   return (
     <div className="flex min-h-screen flex-col bg-white">
       <main className="flex-1">
@@ -34,14 +194,14 @@ export default function ContactoPage() {
             </div>
           </div>
         </section>
-
+ 
         {/* Contact Info & Form */}
         <section className="py-24 bg-white">
           <div className="container max-w-7xl mx-auto px-4">
             <div className="grid lg:grid-cols-12 gap-12">
               <div className="lg:col-span-5">
                 <h2 className="text-3xl font-bold mb-8 text-[#880043]">Información de Contacto</h2>
-
+ 
                 <Card className="border-none shadow-lg mb-8">
                   <CardContent className="p-8">
                     <div className="space-y-8">
@@ -63,7 +223,7 @@ export default function ContactoPage() {
                           </p>
                         </div>
                       </div>
-
+ 
                       <div className="flex items-start">
                         <div
                           className="w-12 h-12 rounded-full flex items-center justify-center mr-4"
@@ -77,14 +237,10 @@ export default function ContactoPage() {
                             <a href="mailto:mbuitragos@univalle.edu" className="hover:text-[#880043]">
                               mbuitragos@univalle.edu
                             </a>
-                            <br />
-                            {/*<a href="mailto:programas@incuvalab.com" className="hover:text-[#880043]">
-                              programas@incuvalab.com
-                            </a>*/}
                           </p>
                         </div>
                       </div>
-
+ 
                       <div className="flex items-start">
                         <div
                           className="w-12 h-12 rounded-full flex items-center justify-center mr-4"
@@ -96,12 +252,10 @@ export default function ContactoPage() {
                           <h3 className="font-bold text-lg mb-2">Teléfono</h3>
                           <p className="text-gray-700">
                             Tel. 4318800 Int.1120
-                            <br />
-                            {/*+591 71234567 (WhatsApp)*/}
                           </p>
                         </div>
                       </div>
-
+ 
                       <div className="flex items-start">
                         <div
                           className="w-12 h-12 rounded-full flex items-center justify-center mr-4"
@@ -112,14 +266,14 @@ export default function ContactoPage() {
                         <div>
                           <h3 className="font-bold text-lg mb-2">Horario de Atención</h3>
                           <p className="text-gray-700">
-                            Lunes a Viernes: 8:00 AM - 5:00 PM     
+                            Lunes a Viernes: 8:00 AM - 5:00 PM    
                           </p>
                         </div>
                       </div>
                     </div>
                   </CardContent>
                 </Card>
-
+ 
                 <h3 className="text-xl font-bold mb-4 text-[#880043]">Síguenos en Redes Sociales</h3>
                 <div className="flex space-x-4">
                   <a
@@ -168,44 +322,134 @@ export default function ContactoPage() {
                   </a>
                 </div>
               </div>
-
+ 
               <div className="lg:col-span-7">
                 <Card className="border-none shadow-lg">
                   <CardContent className="p-8">
                     <h2 className="text-3xl font-bold mb-8 text-[#880043]">Envíanos un Mensaje</h2>
-                    <form className="space-y-6">
+                    <form onSubmit={handleSubmit} className="space-y-6">
                       <div className="grid md:grid-cols-2 gap-6">
                         <div className="space-y-2">
-                          <Label htmlFor="nombre" className="text-base">
-                            Nombre
+                          <Label htmlFor="nombre" className="text-base font-medium">
+                            Nombre *
                           </Label>
-                          <Input id="nombre" placeholder="Tu nombre" className="h-12" />
+                          <div className="relative">
+                            <Input
+                              id="nombre"
+                              placeholder="Tu nombre"
+                              className={getInputClassName('nombre')}
+                              value={formData.nombre}
+                              onChange={(e) => handleInputChange('nombre', e.target.value)}
+                              onBlur={() => handleBlur('nombre')}
+                            />
+                            {getFieldStatus('nombre') === 'success' && (
+                              <CheckCircle className="absolute right-3 top-3 h-5 w-5 text-green-500" />
+                            )}
+                            {getFieldStatus('nombre') === 'error' && (
+                              <AlertCircle className="absolute right-3 top-3 h-5 w-5 text-red-500" />
+                            )}
+                          </div>
+                          {errors.nombre && (
+                            <div className="flex items-center space-x-2 text-red-600 text-sm">
+                              <AlertCircle className="h-4 w-4" />
+                              <span>{errors.nombre}</span>
+                            </div>
+                          )}
                         </div>
+ 
                         <div className="space-y-2">
-                          <Label htmlFor="apellido" className="text-base">
-                            Apellido
+                          <Label htmlFor="apellido" className="text-base font-medium">
+                            Apellido *
                           </Label>
-                          <Input id="apellido" placeholder="Tu apellido" className="h-12" />
+                          <div className="relative">
+                            <Input
+                              id="apellido"
+                              placeholder="Tu apellido"
+                              className={getInputClassName('apellido')}
+                              value={formData.apellido}
+                              onChange={(e) => handleInputChange('apellido', e.target.value)}
+                              onBlur={() => handleBlur('apellido')}
+                            />
+                            {getFieldStatus('apellido') === 'success' && (
+                              <CheckCircle className="absolute right-3 top-3 h-5 w-5 text-green-500" />
+                            )}
+                            {getFieldStatus('apellido') === 'error' && (
+                              <AlertCircle className="absolute right-3 top-3 h-5 w-5 text-red-500" />
+                            )}
+                          </div>
+                          {errors.apellido && (
+                            <div className="flex items-center space-x-2 text-red-600 text-sm">
+                              <AlertCircle className="h-4 w-4" />
+                              <span>{errors.apellido}</span>
+                            </div>
+                          )}
                         </div>
                       </div>
-
+ 
                       <div className="space-y-2">
-                        <Label htmlFor="email" className="text-base">
-                          Correo Electrónico
+                        <Label htmlFor="email" className="text-base font-medium">
+                          Correo Electrónico *
                         </Label>
-                        <Input id="email" type="email" placeholder="tu@email.com" className="h-12" />
+                        <div className="relative">
+                          <Input
+                            id="email"
+                            type="email"
+                            placeholder="tu@email.com"
+                            className={getInputClassName('email')}
+                            value={formData.email}
+                            onChange={(e) => handleInputChange('email', e.target.value)}
+                            onBlur={() => handleBlur('email')}
+                          />
+                          {getFieldStatus('email') === 'success' && (
+                            <CheckCircle className="absolute right-3 top-3 h-5 w-5 text-green-500" />
+                          )}
+                          {getFieldStatus('email') === 'error' && (
+                            <AlertCircle className="absolute right-3 top-3 h-5 w-5 text-red-500" />
+                          )}
+                        </div>
+                        {errors.email && (
+                          <div className="flex items-center space-x-2 text-red-600 text-sm">
+                            <AlertCircle className="h-4 w-4" />
+                            <span>{errors.email}</span>
+                          </div>
+                        )}
                       </div>
-
+ 
                       <div className="space-y-2">
-                        <Label htmlFor="telefono" className="text-base">
-                          Teléfono
+                        <Label htmlFor="telefono" className="text-base font-medium">
+                          Teléfono *
                         </Label>
-                        <Input id="telefono" placeholder="+591 XXXX" className="h-12" />
+                        <div className="relative">
+                          <Input
+                            id="telefono"
+                            placeholder="+591 70123456"
+                            className={getInputClassName('telefono')}
+                            value={formData.telefono}
+                            onChange={(e) => handleInputChange('telefono', e.target.value)}
+                            onBlur={() => handleBlur('telefono')}
+                          />
+                          {getFieldStatus('telefono') === 'success' && (
+                            <CheckCircle className="absolute right-3 top-3 h-5 w-5 text-green-500" />
+                          )}
+                          {getFieldStatus('telefono') === 'error' && (
+                            <AlertCircle className="absolute right-3 top-3 h-5 w-5 text-red-500" />
+                          )}
+                        </div>
+                        {errors.telefono && (
+                          <div className="flex items-center space-x-2 text-red-600 text-sm">
+                            <AlertCircle className="h-4 w-4" />
+                            <span>{errors.telefono}</span>
+                          </div>
+                        )}
                       </div>
-
+ 
                       <div className="space-y-3">
-                        <Label className="text-base">Motivo de Contacto</Label>
-                        <RadioGroup defaultValue="informacion" className="grid grid-cols-2 gap-2">
+                        <Label className="text-base font-medium">Motivo de Contacto</Label>
+                        <RadioGroup
+                          value={formData.motivo}
+                          onValueChange={(value) => handleInputChange('motivo', value)}
+                          className="grid grid-cols-2 gap-2"
+                        >
                           <div className="flex items-center space-x-2">
                             <RadioGroupItem value="informacion" id="informacion" />
                             <Label htmlFor="informacion">Información General</Label>
@@ -224,17 +468,46 @@ export default function ContactoPage() {
                           </div>
                         </RadioGroup>
                       </div>
-
+ 
                       <div className="space-y-2">
-                        <Label htmlFor="mensaje" className="text-base">
-                          Mensaje
+                        <Label htmlFor="mensaje" className="text-base font-medium">
+                          Mensaje *
                         </Label>
-                        <Textarea id="mensaje" placeholder="Escribe tu mensaje aquí..." rows={5} />
+                        <div className="relative">
+                          <Textarea
+                            id="mensaje"
+                            placeholder="Escribe tu mensaje aquí..."
+                            rows={5}
+                            className={`transition-all duration-200 ${
+                              getFieldStatus('mensaje') === 'error'
+                                ? 'border-red-500 focus:border-red-500 focus:ring-red-200'
+                                : getFieldStatus('mensaje') === 'success'
+                                ? 'border-green-500 focus:border-green-500 focus:ring-green-200'
+                                : 'border-gray-300 focus:border-blue-500 focus:ring-blue-200'
+                            }`}
+                            value={formData.mensaje}
+                            onChange={(e) => handleInputChange('mensaje', e.target.value)}
+                            onBlur={() => handleBlur('mensaje')}
+                          />
+                          <div className="absolute bottom-3 right-3 text-xs text-gray-500">
+                            {formData.mensaje.length}/500
+                          </div>
+                        </div>
+                        {errors.mensaje && (
+                          <div className="flex items-center space-x-2 text-red-600 text-sm">
+                            <AlertCircle className="h-4 w-4" />
+                            <span>{errors.mensaje}</span>
+                          </div>
+                        )}
                       </div>
-
-                      <Button type="submit" className="w-full bg-[#880043] text-white hover:bg-[#880043]/90 h-12 text-base">
+ 
+                      <Button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="w-full bg-[#880043] text-white hover:bg-[#880043]/90 h-12 text-base disabled:opacity-50 transition-all duration-200"
+                      >
                         <Send className="mr-2 h-5 w-5" />
-                        Enviar Mensaje
+                        {isSubmitting ? 'Enviando...' : 'Enviar Mensaje'}
                       </Button>
                     </form>
                   </CardContent>
@@ -243,7 +516,7 @@ export default function ContactoPage() {
             </div>
           </div>
         </section>
-
+ 
         {/* Map Section */}
         <section className="py-24 bg-gray-50">
           <div className="container max-w-7xl mx-auto px-4">
