@@ -55,7 +55,7 @@ export default function Casos_form() {
       if (id && nuevasSubidas.length > 0) {
         if (casos.fotos.length > 0) {
           const fotosAntiguas = casos.fotos.map(f => ({ url: f.url }));
-          await client.post("/storage/deleteMany", { files: fotosAntiguas });
+          await client.post("/files/deleteMany", { files: fotosAntiguas });////////////////
         }
         nuevasFotos = nuevasSubidas;
       }

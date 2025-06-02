@@ -184,9 +184,9 @@ const FilesUpload = forwardRef(({
   }
 
   async function uploadFilesComponent() {
-    for (const file of filesToDelete) {
+    /*for (const file of filesToDelete) {
       await client.delete(`/files/delete/${file._id}`);
-    }
+    }*/
 
     if (localFiles.length === 0) {
       return [];
