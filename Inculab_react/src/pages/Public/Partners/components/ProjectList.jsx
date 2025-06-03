@@ -7,7 +7,7 @@ import { StoreContext } from "@/context/store";
 import "./ProjectList.css";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
-
+ 
 export default function ProjectList({ selectedArea }) {
   const store = useContext(StoreContext);
   const [projects, setProjects] = useState([]);
@@ -16,7 +16,7 @@ export default function ProjectList({ selectedArea }) {
   const [matches, setMatches] = useState([]);
   const [showMatches, setShowMatches] = useState(false);
   const [selectedMatchIndex, setSelectedMatchIndex] = useState(null);
-
+ 
   useEffect(() => {
     async function fetchProjects() {
       try {
@@ -29,25 +29,31 @@ export default function ProjectList({ selectedArea }) {
         store.setLoading(false);
       }
     }
-
+ 
     fetchProjects();
   }, []);
-
+ 
+  useEffect(() => {
+    setCurrentIndex(0);
+  }, [selectedArea]);
+ 
   const filteredProjects =
     selectedArea === "all"
       ? projects
       : projects.filter((p) => p.area === selectedArea);
-
+ 
   if (!filteredProjects.length) {
     return <p>No se encontraron proyectos en esta área.</p>;
   }
-
+ 
   const handleNext = () => {
     if (currentIndex < filteredProjects.length - 1) {
       setCurrentIndex((prev) => prev + 1);
+    } else {
+      setCurrentIndex(0);
     }
   };
-
+ 
   const handleRemoveMatch = (id) => {
     Swal.fire({
       title: "¿Estás seguro?",
@@ -66,110 +72,110 @@ export default function ProjectList({ selectedArea }) {
       }
     });
   };
-
+ 
   const handleSelectMatch = (index) => {
     setSelectedMatchIndex(index);
   };
-
+ 
   const Llamada = () => {
     alert("Abrir reunión en Teams");
   };
-
+ 
   const handleChat = (match) => {
     alert(`Abrir chat con Teams para el proyecto: ${match.nombre}`);
   };
-
+ 
   const handleLike = () => {
     const likedProject = filteredProjects[currentIndex];
     setMatches((prev) => [...prev, likedProject]);
     toast.success(`💖 Te gustó el proyecto "${likedProject.nombre}"`);
     handleNext();
   };
-
+ 
   const handleDislike = () => {
     const dislikedProject = filteredProjects[currentIndex];
     toast.info(`❌ No te gustó el proyecto "${dislikedProject.nombre}"`);
     handleNext();
   };
-
+ 
   const handleGoToMatches = () => {
     navigate("/matches", { state: { matches } });
   };
-
+ 
   const project = filteredProjects[currentIndex];
-
+ 
   const ProjectCard = ({ data }) => (
-   <Card key={data._id} className="tinder-card">
-    <div className="card-image-container">
-      <img
-        src={data.fotos?.[0] || "/placeholder.jpg"}
-        alt={data.nombre}
-        className="card-cover-image"
-      />
-    </div>
-
-
-    <CardContent className="profile-content">
-      <h2 className="profile-name">{data.nombre}</h2>
-      <p className="profile-title">{data.tema}</p>
-
-      <div className="profile-detail">
-        <MapPin className="profile-icon" />
-        <span>{data.carrera}</span>
+    <Card key={data._id} className="tinder-card">
+      <div className="card-image-container">
+        <img
+          src={data.fotos?.[0] || "/placeholder.jpg"}
+          alt={data.nombre}
+          className="card-cover-image"
+        />
       </div>
-
-      <div className="project-section">
-        <h3>
-          <Briefcase className="icon-inline" /> Descripción
-        </h3>
-        <p>{data.descripcion}</p>
-      </div>
-
-      <div className="project-section">
-        <h3>
-          <Briefcase className="icon-inline" /> Etapa del Proyecto
-        </h3>
-        <p>{data.etapa_proyecto}</p>
-      </div>
-
-      <div className="project-section">
-        <h3>
-          <Briefcase className="icon-inline" /> Socios Buscados
-        </h3>
-        <ul>
-          {data.socios_buscados?.length > 0 ? (
-            data.socios_buscados.map((socio, i) => <li key={i}>🔹 {socio}</li>)
-          ) : (
-            <li>No especificados</li>
-          )}
-        </ul>
-      </div>
-
-      <div className="project-section">
-        <h3>
-          <Briefcase className="icon-inline" /> Otra Habilidad
-        </h3>
-        <p>{data.otra_habilidad || "No especificada"}</p>
-      </div>
-
-      <div className="looking-for">
-        <h3>Contacto</h3>
-        <p>{data.contacto}</p>
-      </div>
-    </CardContent>
-  </Card>
-);
-
-
+ 
+      <CardContent className="profile-content">
+        <h2 className="profile-name">{data.nombre}</h2>
+        <p className="profile-title">{data.tema}</p>
+ 
+        <div className="profile-detail">
+          <MapPin className="profile-icon" />
+          <span>{data.carrera}</span>
+        </div>
+ 
+        <div className="project-section">
+          <h3>
+            <Briefcase className="icon-inline" /> Descripción
+          </h3>
+          <p>{data.descripcion}</p>
+        </div>
+ 
+        <div className="project-section">
+          <h3>
+            <Briefcase className="icon-inline" /> Etapa del Proyecto
+          </h3>
+          <p>{data.etapa_proyecto}</p>
+        </div>
+ 
+        <div className="project-section">
+          <h3>
+            <Briefcase className="icon-inline" /> Socios Buscados
+          </h3>
+          <ul>
+            {data.socios_buscados?.length > 0 ? (
+              data.socios_buscados.map((socio, i) => (
+                <li key={i}>🔹 {socio}</li>
+              ))
+            ) : (
+              <li>No especificados</li>
+            )}
+          </ul>
+        </div>
+ 
+        <div className="project-section">
+          <h3>
+            <Briefcase className="icon-inline" /> Otra Habilidad
+          </h3>
+          <p>{data.otra_habilidad || "No especificada"}</p>
+        </div>
+ 
+        <div className="looking-for">
+          <h3>Contacto</h3>
+          <p>{data.contacto}</p>
+        </div>
+      </CardContent>
+    </Card>
+  );
+ 
   return (
     <>
       <div className="background-decor" />
-
+ 
       <div className="tinder-carousel">
         <button onClick={handleGoToMatches} className="view-matches-btn">
           <Eye size={20} /> Ver Matches
         </button>
-
+ 
         {showMatches ? (
           <div className="matches-list-crud">
             <h3> Tus Matches</h3>
@@ -229,7 +235,7 @@ export default function ProjectList({ selectedArea }) {
         ) : (
           <>
             <ProjectCard data={project} />
-
+ 
             <div className="tinder-buttons">
               <button onClick={handleDislike} className="dislike-btn">
                 <X size={32} stroke="#880038" />
