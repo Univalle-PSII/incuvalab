@@ -1,6 +1,4 @@
-//initJSfotos
 import FilesViewer from "@/components/FilesViewer";
-//endJSfotos
 import Icon from "@/components/Icon";
 import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -13,10 +11,10 @@ export default function Casos_delete() {
     const store = useContext(StoreContext);
     const navigate = useNavigate();
     const [casos, set_casos] = useState({});
+    const [showModal, setShowModal] = useState(false);
+
     const populate = [
-        //initJSid_categoria
         "id_categoria",
-        //endJSid_categoria
         "last_user",
     ];
 
@@ -43,8 +41,37 @@ export default function Casos_delete() {
         }
     }, []);
 
+    const confirmDeleteModal = (
+        showModal && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                <div className="bg-white rounded-lg p-6 w-full max-w-md shadow-lg">
+                    <h2 className="text-lg font-bold text-gray-800 mb-4">¿Estás seguro?</h2>
+                    <p className="text-sm text-gray-600 mb-6">Esta acción eliminará el caso de forma permanente.</p>
+                    <div className="flex justify-end space-x-3">
+                        <button
+                            onClick={() => setShowModal(false)}
+                            className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400"
+                        >
+                            Cancelar
+                        </button>
+                        <button
+                            onClick={() => {
+                                setShowModal(false);
+                                deleteCasos();
+                            }}
+                            className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+                        >
+                            Sí, eliminar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        )
+    );
+
     return (
         <>
+            {confirmDeleteModal}
             <div className="px-4 sm:px-6 lg:px-8">
                 <div className="bg-gray-50 px-4 py-3 rounded-lg border-gray-200 border sm:flex sm:items-center">
                     <div className="sm:flex-auto">
@@ -69,7 +96,7 @@ export default function Casos_delete() {
                     <div className="mt-5">
                         <button
                             type="button"
-                            onClick={deleteCasos}
+                            onClick={() => setShowModal(true)}
                             className="text-lg inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:text-sm"
                         >
                             Eliminar Casos
@@ -77,14 +104,11 @@ export default function Casos_delete() {
                     </div>
 
                     <dl className="grid 2xl:grid-cols-5 sm:grid-cols-4 grid-cols-1 2xl:gap-4 sm:gap-2 gap-1 mt-4">
-
-                        {/* Titulo */}
                         <div>
                             <dt className="block font-medium text-black 2xl:text-sm text-xs">Titulo</dt>
                             <dd className="block font-medium text-black 2xl:text-sm text-xs">{casos?.titulo}</dd>
                         </div>
 
-                        {/* Descripcion */}
                         <div>
                             <dt className="block font-medium text-black 2xl:text-sm text-xs">Descripcion</dt>
                             <dd className="block font-medium text-black 2xl:text-sm text-xs" style={{ whiteSpace: 'pre-wrap' }}>
@@ -92,7 +116,6 @@ export default function Casos_delete() {
                             </dd>
                         </div>
 
-                        {/* Fotos */}
                         <div>
                             <dt className="block font-medium text-black 2xl:text-sm text-xs">Fotos</dt>
                             <dd className="block font-medium text-black 2xl:text-sm text-xs">
@@ -100,7 +123,6 @@ export default function Casos_delete() {
                             </dd>
                         </div>
 
-                        {/* Video */}
                         <div>
                             <dt className="block font-medium text-black 2xl:text-sm text-xs">Video (URL)</dt>
                             <dd className="block font-medium text-blue-700 underline 2xl:text-sm text-xs break-all">
@@ -108,7 +130,6 @@ export default function Casos_delete() {
                             </dd>
                         </div>
 
-                        {/* Categoría */}
                         <div>
                             <dt className="block font-medium text-black 2xl:text-sm text-xs">Categoría</dt>
                             <dd className="block font-medium text-black 2xl:text-sm text-xs">
@@ -116,7 +137,6 @@ export default function Casos_delete() {
                             </dd>
                         </div>
 
-                        {/* Último editor */}
                         <div className="sm:col-span-1">
                             <dt className="block text-sm font-medium text-gray-700">Último Editor</dt>
                             <dd className="mt-1 block w-full shadow-sm sm:text-sm border-y-400 text-blue-800 rounded-md">
@@ -124,7 +144,6 @@ export default function Casos_delete() {
                             </dd>
                         </div>
 
-                        {/* Fechas */}
                         <div className="sm:col-span-1">
                             <dt className="block text-sm font-medium text-gray-700">Creado en</dt>
                             <dd className="mt-1 block w-full shadow-sm sm:text-sm border-y-400 text-blue-800 rounded-md">
@@ -144,4 +163,3 @@ export default function Casos_delete() {
         </>
     );
 }
-    
