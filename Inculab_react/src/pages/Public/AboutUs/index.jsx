@@ -95,7 +95,7 @@ export default function QuienesSomosPage() {
                 </div>
                 <h3 className="text-2xl font-bold mb-4 text-[#66b5cb]">Visión</h3>
                 <p className="text-gray-700">
-                  Ser un referente en generacion de emprendimiento universitario en Bolivia,
+                  Ser un referente en generación de emprendimiento universitario en Bolivia,
                   generando un ecosistema dinámico que contribuya significativamente al desarrollo económico y social
                   del país.
                 </p>
@@ -224,25 +224,25 @@ export default function QuienesSomosPage() {
                 {
                   year: "2022",
                   title: "Primer DemoDay Incuva Lab",
-                  description: "Primera Presentacion de proyectos de estudiantes de la primera y segunda generacion de incubados",
+                  description: "Primera Presentación de proyectos de estudiantes de la primera y segunda generación de incubados.",
                   align: "left",
                 },
                 {
                   year: "2023",
-                  title: "Primeros Ajustes a la Metodologia de Incubacion",
-                  description: "Transformación de la metodologia semestral a una metodologia anual.",
+                  title: "Primeros Ajustes a la Metodología de Incubación",
+                  description: "Transformación de la metodología semestral a una metodología anual.",
                   align: "right",
                 },
                 {
                   year: "2023",
-                  title: "Expancion de la red de mentores",
-                  description: "Integracion de nuevos mentores especializados en la incubadora.",
+                  title: "Expansión de la red de mentores",
+                  description: "Integración de nuevos mentores especializados en la incubadora.",
                   align: "left",
                 },
                 {
                   year: "2023",
                   title: "Lanzamiento del programa partners",
-                  description: "Establecimiento de alianzas entre estudiantes emprenderores y tesistas.",
+                  description: "Establecimiento de alianzas entre estudiantes emprendedores y tesistas.",
                   align: "right",
                 },
                 {
@@ -253,9 +253,9 @@ export default function QuienesSomosPage() {
                 },
                 {
                   year: "2024",
-                  title: "Reformulacion y relanzamiento del Plan Incuva Lab a nivel nacional",
+                  title: "Reformulación y relanzamiento del Plan Incuva Lab a nivel nacional",
                   description:
-                    "Integracion de una metodologia formal a nivel nacional con diferentes direcciones de carreras.",
+                    "Integración de una metodología formal a nivel nacional con diferentes direcciones de carreras.",
                   align: "right",
                 },
               ].map((item, index) => (

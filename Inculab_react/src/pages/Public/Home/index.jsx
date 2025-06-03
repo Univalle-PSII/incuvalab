@@ -134,7 +134,7 @@ export default function Home() {
         {
           quote:
             "El adoptar el fracaso como primer paso y luego transformarlo en los resultados que deseas es un arte que se domina con tiempo, reinvención y pasión.",
-          author: "Alvaro Orellana Guardia",
+          author: "Álvaro Orellana Guardia",
           company: "Ing. Comercial, 8vo semestre",
           image: "/images/Alvaro8voSemestre.png",
         },
@@ -142,12 +142,12 @@ export default function Home() {
           quote:
             "Sabemos que crear una empresa puede ser un proceso muy desafiante, nuestro consejo sería que tomen los riesgos, estén abiertos a las oportunidades, no tengan miedo de perseguir sus sueños.",
           author: "Ervin Arispe Orellana",
-          company: "Lic. Adm de Empresas, 5to semestre",
+          company: "Lic. Adm. de Empresas, 5to semestre",
           image: "/images/Ervin5toSemestre.png",
         },
         {
           quote:
-            "Les diríamos que no tengan miedo de intentarlo. A veces, el miedo alfracaso puede ser abrumador, pero si no intentas hacer algo nuevo, nunca sabrás si podrías haberlo logrado.",
+            "Les diríamos que no tengan miedo de intentarlo. A veces, el miedo al fracaso puede ser abrumador, pero si no intentas hacer algo nuevo, nunca sabrás si podrías haberlo logrado.",
           author: "Heidi Katherine Aguilar Bozo",
           company: "Ing. Comercial, 8vo semestre",
           image: "/images/Heidi8voSemestre.png",
@@ -170,9 +170,9 @@ export default function Home() {
           category: "Evento",
         },
         {
-          title: "Inicio del Programa de Mentoria",
+          title: "Inicio del Programa de Mentoría",
           date: "Julio, 2025",
-          description: "Arrancamos con el programa Mentoring a nivel Nacional, conoce a los elegidos.",
+          description: "Arrancamos con el programa Mentoring a nivel nacional, conoce a los elegidos.",
           image: "/images/Mentores.png",
           category: "Evento",
         },
@@ -442,7 +442,7 @@ export default function Home() {
                     Noticias y <span className="text-[#880043]">Eventos</span>
                   </h2>
                 </div>
-                <Link to="/eventos" className="font-medium text-[#880043] hover:underline flex items-center">
+                <Link to="/events" className="font-medium text-[#880043] hover:underline flex items-center">
                   Ver Todo <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </div>

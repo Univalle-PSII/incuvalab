@@ -48,10 +48,10 @@ export default function RevenuePage() {
       <section className="py-20">
         <div className="container max-w-7xl mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">Tecnologia de primer nivel a tu alcance</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">Tecnología de primer nivel a tu alcance</h2>
             <p className="text-lg text-gray-600">
               El programa Revenue de IncuvaLab está diseñado para ayudar a emprendedores a desarrollar los productos, servicios
-              y branding a partir del uso de los centros de tranferencia tecnologica de la Universidad
+              y branding a partir del uso de los centros de transferencia tecnológica de la Universidad
               Privada del Valle.
             </p>
           </div>
@@ -60,7 +60,7 @@ export default function RevenuePage() {
             <Card className="border-none shadow-md hover:shadow-lg transition-shadow">
               <CardHeader className="pb-4">
                 <DollarSign className="h-12 w-12 text-[#880043] mb-2" />
-                <CardTitle>Gestion Comercial</CardTitle>
+                <CardTitle>Gestión Comercial</CardTitle>
                 <CardDescription>Desarrollo de branding y packaging</CardDescription>
               </CardHeader>
               <CardContent>
@@ -79,7 +79,7 @@ export default function RevenuePage() {
               </CardHeader>
               <CardContent>
                 <p className="text-gray-600">
-                  Te ayudamos a desarrollar tu proceso de produccion de manera mas eficiente 
+                  Te ayudamos a desarrollar tu proceso de producción de manera más eficiente 
                   y conveniente para tu negocio.
                 </p>
               </CardContent>
@@ -93,8 +93,8 @@ export default function RevenuePage() {
               </CardHeader>
               <CardContent>
                 <p className="text-gray-600">
-                  Te ayudamos con la creacion de plataformas digitales para mejorar tus sistemas comerciales
-                  y de gestion.
+                  Te ayudamos con la creación de plataformas digitales para mejorar tus sistemas comerciales
+                  y de gestión.
                 </p>
               </CardContent>
             </Card>
@@ -106,9 +106,9 @@ export default function RevenuePage() {
       <section className="py-20 bg-white">
         <div className="container max-w-7xl mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">Como Postular</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">Cómo Postular</h2>
             <p className="text-lg text-gray-600">
-              Buscamos proyectos de impacto que necesiten de este apoyo y que esten dispuestos 
+              Buscamos proyectos de impacto que necesiten de este apoyo y que estén dispuestos 
               a trabajar en equipo con la Universidad.
             </p>
           </div>
@@ -116,15 +116,15 @@ export default function RevenuePage() {
           <Tabs defaultValue="fase1" className="max-w-4xl mx-auto">
             <TabsList className="grid grid-cols-1 md:grid-cols-3 mb-8">
               <TabsTrigger value="fase1">Fase 1: Diagnóstico</TabsTrigger>
-              <TabsTrigger value="fase2">Fase 2: Planificacion</TabsTrigger>
+              <TabsTrigger value="fase2">Fase 2: Planificación</TabsTrigger>
               <TabsTrigger value="fase3">Fase 3: Implementación</TabsTrigger>
             </TabsList>
             <TabsContent value="fase1" className="border rounded-lg p-6">
-              <h3 className="text-xl font-bold mb-4">Pasos de la Postulacion</h3>
+              <h3 className="text-xl font-bold mb-4">Pasos de la Postulación</h3>
               <ul className="space-y-3 text-gray-600">
                 {[
-                  "Analisis del estado actual del negocio.",
-                  "Coordinacion con los centros de tranferencia tecnologica de la Universidad",
+                  "Análisis del estado actual del negocio.",
+                  "Coordinación con los centros de transferencia tecnológica de la Universidad",
                 ].map((item, i) => (
                   <li key={i} className="flex items-start">
                     <div className="mr-2 mt-1 bg-[#880043] rounded-full p-1 text-white">
@@ -136,11 +136,11 @@ export default function RevenuePage() {
               </ul>
             </TabsContent>
             <TabsContent value="fase2" className="border rounded-lg p-6">
-              <h3 className="text-xl font-bold mb-4">Pasos de la planificacion</h3>
+              <h3 className="text-xl font-bold mb-4">Pasos de la planificación</h3>
               <ul className="space-y-3 text-gray-600">
                 {[
-                  "Planificacion del trabajo a realizarce",
-                  "Entrega de resultados y analisis finales",
+                  "Planificación del trabajo a realizarse",
+                  "Entrega de resultados y análisis finales",
                   "Planificación financiera y costos del proyecto",
                 ].map((item, i) => (
                   <li key={i} className="flex items-start">
@@ -153,10 +153,10 @@ export default function RevenuePage() {
               </ul>
             </TabsContent>
             <TabsContent value="fase3" className="border rounded-lg p-6">
-              <h3 className="text-xl font-bold mb-4">Pasos para la implementacion </h3>
+              <h3 className="text-xl font-bold mb-4">Pasos para la implementación</h3>
               <ul className="space-y-3 text-gray-600">
                 {[
-                  "La implementacion dependera de cada caso de investigacion",
+                  "La implementación dependerá de cada caso de investigación",
                 ].map((item, i) => (
                   <li key={i} className="flex items-start">
                     <div className="mr-2 mt-1 bg-[#880043] rounded-full p-1 text-white">
@@ -186,30 +186,12 @@ export default function RevenuePage() {
               {
                 title: "Productoras de Vinagre de Manzana",
                 description:
-                  '"Productoras de manzana de la comunidad de tiquipaya"',
-                subtitle: "Fruto del convenio fundacion Kallpa",
+                  '"Productoras de manzana de la comunidad de Tiquipaya"',
+                subtitle: "Fruto del convenio Fundación Kallpa",
                 author: "CIT Tierra",
                 image: "/images/CasoExito1.jpg",
                 alt: "Caso de éxito 1",
               },
-              //{
-              //  title: "EcoVida",
-              //  description:
-              //    '"Implementamos una estrategia de diversificación de ingresos que nos permitió reducir la dependencia de un solo canal y aumentar nuestro margen de beneficio."',
-              //  subtitle: "Productos sostenibles",
-              //  author: "Carlos Ramírez, Fundador",
-              //  image: "/placeholder.svg?height=200&width=400",
-              //  alt: "Caso de éxito 2",
-              //},
-              //{
-              //  title: "HealthPlus",
-              //  description:
-              //    '"Optimizamos nuestra estructura de costos y desarrollamos un modelo de ingresos híbrido que nos permitió alcanzar el punto de equilibrio en tiempo récord."',
-              //  subtitle: "Servicios de salud",
-              //  author: "Ana Martínez, Directora",
-              //  image: "/placeholder.svg?height=200&width=400",
-              //  alt: "Caso de éxito 3",
-              //},
             ].map(({ title, description, subtitle, author, image, alt }, i) => (
               <Card key={i} className="border-none shadow-md overflow-hidden">
                 <div className="relative h-48">
